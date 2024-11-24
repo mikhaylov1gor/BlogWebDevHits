@@ -10,7 +10,9 @@ body {
 
     nav {
       display: flex;
-      gap: 15px;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
 
       a {
         color: #fff;
@@ -20,10 +22,97 @@ body {
           text-decoration: underline;
         }
       }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .login-link{
+        margin-left: auto;
+      }
     }
   }
 
   main {
     padding: 20px;
   }
+  // модальное окно
+  .modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content{
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  label {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .sign-in-button {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .sign-up-button {
+    background-color: #6c757d;
+    color: white;
+  }
+
 }
