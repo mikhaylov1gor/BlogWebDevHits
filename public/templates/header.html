@@ -15,8 +15,12 @@
         </div>
         <div class = "login-link">
             <a href="/login" data-link id="login-button">Вход</a>
-            <div id="user-menu" style="display: none;">
+            <div id="user-menu" class="user-email-button" style="display: none; position: relative;">
                 <span id="user-email"></span>
+                <div id="dropdown-menu" class="dropdown" style="display: none;">
+                    <button class="dropdown-item" id="profile-button">Профиль</button>
+                    <button class="dropdown-item" id="logout-button">Выйти</button>
+                </div>
             </div>
         </div>
     </nav>

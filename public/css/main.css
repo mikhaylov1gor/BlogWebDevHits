@@ -30,12 +30,21 @@ body header nav .login-link {
 body main {
   padding: 20px;
 }
-body #auth-container {
+body #window-container {
   background-color: #fff;
   margin: 50px auto;
   padding: 20px;
   border: 1px solid #888;
   width: 30%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+body #profile-container {
+  background-color: #fff;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 85%;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
@@ -48,8 +57,8 @@ body form {
   gap: 10px;
 }
 body label {
-  font-size: 14px;
-  text-align: left;
+  display: block;
+  margin-bottom: 8px;
 }
 body input {
   padding: 8px;
@@ -59,12 +68,21 @@ body input {
   width: 100%;
   box-sizing: border-box;
 }
+body input,
+body select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+}
 body button {
   padding: 10px;
-  font-size: 14px;
+  background-color: #007bff;
+  color: white;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+}
+body button:hover {
+  background-color: #007bff;
 }
 body .sign-in-button {
   background-color: #007bff;
@@ -73,4 +91,45 @@ body .sign-in-button {
 body .sign-up-button {
   background-color: #6c757d;
   color: white;
+}
+body .save-button {
+  border-radius: 4px;
+  margin-left: auto;
+  width: 25%;
+  background-color: #007bff;
+  color: white;
+}
+body .user-email-button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  color: #ffffff;
+}
+body .dropdown {
+  margin-top: 15%;
+  margin-right: 15%;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: 150px;
+  z-index: 1000;
+}
+body .dropdown-item {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  background-color: white;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+body .dropdown-item:hover {
+  background-color: #f5f5f5;
 }

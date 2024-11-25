@@ -22,9 +22,8 @@ export function initializeLoginPage() {
 
         try {
             const data = await loginApi(email, password);
-
             if (data.token) {
-                window.location.href = "/profile";
+                window.location.href = "/";
             }
         } catch (error) {
             document.getElementById("login-error").textContent = error.message;

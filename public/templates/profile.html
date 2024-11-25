@@ -6,6 +6,31 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+<div id="profile-container">
+    <form id="auth-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="name@example.com" required />
 
+        <label for="name">ФИО</label>
+        <input type="text" id="name" name="name" placeholder="Иванов Иван Иванович" required />
+
+        <label for="phone">Номер телефона</label>
+        <input type="text" id="phone" name="phone" placeholder="+7 (xxx) xxx xx-xx" required />
+
+        <label for="gender">Пол</label>
+        <select id="gender" name="gender">
+            <option value="Мужчина">Мужчина</option>
+            <option value="Женщина">Женщина</option>
+        </select>
+
+        <label for="birthDate">Дата рождения:</label>
+        <input type="date" id="birthDate" name="birthDate" placeholder="дд.мм.гггг" required />
+
+
+        <button type="button" id="save" class="save-button">Сохранить</button>
+    </form>
+    <hr>
+</div>
+<script src="../js/app/profile.js" type="module" defer></script>
 </body>
 </html>

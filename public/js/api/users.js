@@ -2,7 +2,8 @@ const API_URL = "https://blog.kreosoft.space/api"
 
 export async function registerApi(fullName,password,email,birthDate,gender,phoneNumber){
     try {
-        const response = await fetch (`${API_URL}/account/register}`,{
+        const response = await fetch (`${API_URL}/account/register`,{
+
            method: "POST",
            headers: {
                "Content-Type": "application/json",
@@ -10,14 +11,15 @@ export async function registerApi(fullName,password,email,birthDate,gender,phone
             body: JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber})
         });
 
+        console.log(JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber}))
         if (!response.ok){
             const errorData = await response.json();
-            throw new Error(errorData.message || "Login failed")
+            throw new Error(errorData.message || "Registration failed")
         }
 
         const data = await response.json();
         localStorage.setItem("authToken", data.token);
-        return data
+        window.location.href="/";
 
     } catch(error){
         console.error("Login failed", error.message);
@@ -60,17 +62,23 @@ export async function logoutApi(){
         const response = await fetch(`${API_URL}/account/logout`,{
             method: "POST",
             headers: {
-                'Authorization': 'Bearer ${token}'
+                'Authorization': `Bearer ${token}`,
             },
         });
+
+        if (!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Logout failed")
+        }
+        console.log('success')
+        localStorage.removeItem("authToken");
+        window.location.href = "/";
+
     } catch (error){
         console.error("error", error.message);
         throw error;
     }
 
-    localStorage.removeItem('authToken');
-    console.log('Выход успешен');
-    window.location.href = '/index.html';
 }
 
 export async function getProfileApi(){
@@ -90,7 +98,7 @@ export async function getProfileApi(){
 
         if (!response.ok){
             const errorData = await response.json();
-            throw new Error(errorData.message || "Login failed")
+            throw new Error(errorData.message || "GetProfile failed")
         }
 
         return await response.json();
@@ -120,10 +128,11 @@ export async function editProfileApi(email,fullName,birthDate,gender,phoneNumber
 
         if (!response.ok){
             const errorData = await response.json();
-            throw new Error(errorData.message || "Login failed")
+            throw new Error(errorData.message || "EditProfile failed")
         }
 
-        return await response.json();
+        const responseBody = await response.text();
+        return responseBody ? JSON.parse(responseBody) : null;
 
     } catch (error){
         console.error("error", error.message);
