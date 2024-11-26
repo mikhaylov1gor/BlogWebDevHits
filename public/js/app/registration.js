@@ -1,6 +1,7 @@
 import {rendering} from "./router.js";
 import {registerApi} from "../api/users.js";
 
+
 export function initializeRegistrationPage() {
     const authForm = document.getElementById("auth-form");
 

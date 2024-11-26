@@ -61,6 +61,13 @@ body {
           display: flex;
           gap: 5px;
 
+
+          #tags {
+            width: 100%;
+            height: 60px;
+            overflow-y: auto;
+          }
+
           input[type="text"],
           select,
           input[type="date"] {
@@ -106,49 +113,130 @@ body {
 
       .post {
         background-color: #fff;
-        margin: auto;
+        margin: 20px auto;
         padding: 10px;
-        border: 1px solid #888;
+        border: 1px solid #ccc;
         width: 50%;
         border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
-        h3 {
-          margin: 0 0 10px 0;
-          font-size: 18px;
-        }
-
-        p {
-          margin: 0 0 10px 0;
-        }
-
-        small {
+        header {
+          background: #ffffff;
           color: #333;
-          font-size: 12px;
+          box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+          h3 {
+            color: #6c757d;
+            margin: 0 0 5px 0;
+            font-size: 12px;
+            line-height: 1.4;
+          }
+
+          h1 {
+            font-size: 16px;
+            margin: 0 0 10px 0;
+            font-weight: bold;
+          }
         }
+
+        .post-image {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          margin: 0 auto;
+        }
+        p {
+          line-height: 1.5;
+          font-size: 14x;
+
+          a{
+            color: #007bff;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        #small-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          small {
+            color: #333;
+            font-size: 12px;
+          }
+        }
+
+        .post-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+
+          .comment-button, .like-button {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #e9ecef;
+            }
+
+            span {
+              font-size: 12px;
+              color: #6c757d;
+            }
+          }
+        }
+
       }
     }
 
     #pagination {
-      margin: 20px 0;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
 
-      button {
-        padding: 5px 10px;
-        margin: 0 5px;
-        border: 1px solid #ddd;
-        background-color: #f4f4f4;
-        cursor: pointer;
-        transition: background-color 0.2s;
+      .pagination {
+        display: inline-block;
 
-        &:hover {
-          background-color: #eee;
+        a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+          border: 1px solid #ddd;
+
+          &.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+          }
+
+          &:hover:not(.active) {
+            background-color: #ddd;
+          }
         }
+      }
+      .page-size label {
+        margin-right: 8px;
+        font-size: 14px;
+      }
 
-        &:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
+      .page-size select {
+        padding: 5px;
+        font-size: 14px;
       }
     }
   }
@@ -165,3 +253,4 @@ body {
     }
   }
 }
+

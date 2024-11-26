@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <main>
@@ -22,7 +23,7 @@
                 </div>
                 <div class="input-group" style="width: 50%;">
                     <label for="tags">Поиск по тегам</label>
-                    <select id="tags" name="tags">
+                    <select id="tags" multiple name="tags">
                             <!--тут теги будут !-->
                     </select>
                 </div>
@@ -37,86 +38,55 @@
                         <option value="LikeDesc">По количеству лайков(убывание)</option>
                     </select>
                 </div>
-                <div class="input-group" style="width: 30%;">
-                    <label for="start_date">Время чтения от</label>
-                    <input id="start_date" type="date" name="start_date">
+                <div class="input-group" style="width: 20%;">
+                    <label for="min_reading">Время чтения от</label>
+                    <input id="min_reading" type="number" name="start_date">
                 </div>
-                <div class="input-group" style="width: 30%;">
-                    <label for="end_date">Время чтения до</label>
-                    <input id="end_date" type="date" name="end_date">
+                <div class="input-group" style="width: 20%;">
+                    <label for="max_reading">Время чтения до</label>
+                    <input id="max_reading" type="number" name="end_date">
                 </div>
 
-                <div class="input-group" id="checkbox_onlyMine" style="width: 30%;">
+                <div class="input-group" id="checkbox_onlyMine" style="width: 15%;">
                     <label for="only_mine">Только мои группы</label>
                     <input id="only_mine" type="checkbox" name="only_mine">
                 </div>
-                <button id="confirm-button">Применить</button>
+                <button id="confirm-button" type="submit" style="margin-left: auto">Применить</button>
             </div>
         </form>
     </section>
 
 
     <section id="posts">
-        <div class="post">
-            <h3>Заголовок поста</h3>
-            <p>
-                Это пример текста поста. Здесь можно разместить описание или основное содержание поста.
-            </p>
-            <small>Автор: Иван Иванов | Дата: 2024-11-27</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
-        <div class="post">
-            <h3>Еще один заголовок поста</h3>
-            <p>
-                Дополнительный текст поста для проверки отображения нескольких постов.
-            </p>
-            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
-        </div>
+        <!-- тут посты будут !-->
     </section>
 
-    <div id="pagination">
-        <button data-page="1">1</button>
-        <button data-page="2">2</button>
-        <button data-page="3">3</button>
+    <div id="pagination" style="display: none;">
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">&raquo;</a>
+        </div>
+        <div class="page-size">
+            <label for="pageSize">Размер страницы:</label>
+            <select id="pageSize">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
     </div>
+
 </main>
 
 <footer>
-    <p>&copy; footer</p>
+    <p>&copy;2024 - Блог №415</p>
 </footer>
 
 <script src="../js/app/home.js" type="module" defer></script>
