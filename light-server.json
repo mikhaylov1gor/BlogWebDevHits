@@ -9,5 +9,5 @@
     "public/*.html"
   ],
   "serve": "public",
-  "historyFallback": "index.html"
+  "historyFallback": "/index.html"
 }

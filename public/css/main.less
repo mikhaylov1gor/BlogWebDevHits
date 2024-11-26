@@ -4,9 +4,10 @@ body {
   padding: 0;
 
   header {
-    background: #333;
-    color: #fff;
+    background: #ffffff;
+    color: #000000;
     padding: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 
     nav {
       display: flex;
@@ -14,13 +15,26 @@ body {
       align-items: center;
       width: 100%;
 
+
       a {
-        color: #fff;
+        color: #000000;
         text-decoration: none;
 
         &:hover {
           text-decoration: underline;
         }
+      }
+
+      .user-email-button {
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        color: #ffffff;
+        &:hover {
+          text-decoration: underline;
+        }
+
       }
 
       .nav-links {
@@ -124,6 +138,10 @@ body {
     border: none;
     font-size: 16px;
     color: #ffffff;
+  }
+
+  .user-email-button:hover{
+    text-decoration: underline;
   }
 
   .dropdown {

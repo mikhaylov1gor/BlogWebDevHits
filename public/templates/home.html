@@ -3,12 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-<div id = "window-container">
-    <h1>Добро пожаловать в блог</h1>
-</div>
+<main>
+    <div class="create-post-button-container">
+        <button id="create-post-button">Написать пост</button>
+    </div>
+    <section id="filters">
+        <form id="filter-form">
+            <header>
+                <h2>Фильтры</h2>
+            </header>
+            <div class="filter-row">
+                <div class="input-group" style="width: 50%;">
+                    <label for="author">Поиск по имени автора</label>
+                    <input type="text" id="author" name="author">
+                </div>
+                <div class="input-group" style="width: 50%;">
+                    <label for="tags">Поиск по тегам</label>
+                    <select id="tags" name="tags">
+                            <!--тут теги будут !-->
+                    </select>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="input-group" style="width: 30%;">
+                    <label for="sorting">Сортировать</label>
+                    <select id="sorting" name="sorting">
+                        <option value="CreateAsc">По дате создания (сначала новые)</option>
+                        <option value="CreateDesc">По дате создания (сначала старые)</option>
+                        <option value="LikeAsc">По количеству лайков(возрастание)</option>
+                        <option value="LikeDesc">По количеству лайков(убывание)</option>
+                    </select>
+                </div>
+                <div class="input-group" style="width: 30%;">
+                    <label for="start_date">Время чтения от</label>
+                    <input id="start_date" type="date" name="start_date">
+                </div>
+                <div class="input-group" style="width: 30%;">
+                    <label for="end_date">Время чтения до</label>
+                    <input id="end_date" type="date" name="end_date">
+                </div>
 
+                <div class="input-group" id="checkbox_onlyMine" style="width: 30%;">
+                    <label for="only_mine">Только мои группы</label>
+                    <input id="only_mine" type="checkbox" name="only_mine">
+                </div>
+                <button id="confirm-button">Применить</button>
+            </div>
+        </form>
+    </section>
+
+
+    <section id="posts">
+        <div class="post">
+            <h3>Заголовок поста</h3>
+            <p>
+                Это пример текста поста. Здесь можно разместить описание или основное содержание поста.
+            </p>
+            <small>Автор: Иван Иванов | Дата: 2024-11-27</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+        <div class="post">
+            <h3>Еще один заголовок поста</h3>
+            <p>
+                Дополнительный текст поста для проверки отображения нескольких постов.
+            </p>
+            <small>Автор: Анна Смирнова | Дата: 2024-11-26</small>
+        </div>
+    </section>
+
+    <div id="pagination">
+        <button data-page="1">1</button>
+        <button data-page="2">2</button>
+        <button data-page="3">3</button>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; footer</p>
+</footer>
+
+<script src="../js/app/home.js" type="module" defer></script>
 </body>
 </html>

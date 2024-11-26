@@ -11,12 +11,13 @@
         <div class = "nav-links">
             Блог №415
             <a href="/" data-link>Главная</a>
-            <a href="#" style="display: none;">Написать пост</a>
+            <a href="/authors" data-link id="authors-link">Авторы</a>
+            <a href="/communities" data-link id="communities-link">Группы</a>
         </div>
         <div class = "login-link">
             <a href="/login" data-link id="login-button">Вход</a>
             <div id="user-menu" class="user-email-button" style="display: none; position: relative;">
-                <span id="user-email"></span>
+                <span id="user-email" style ="color: #000000"></span>
                 <div id="dropdown-menu" class="dropdown" style="display: none;">
                     <button class="dropdown-item" id="profile-button">Профиль</button>
                     <button class="dropdown-item" id="logout-button">Выйти</button>
@@ -26,5 +27,8 @@
     </nav>
 </header>
 
+
+
+<script src="../js/app/header.js" type="module" defer></script>
 </body>
 </html>

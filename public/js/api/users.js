@@ -105,6 +105,7 @@ export async function getProfileApi(){
 
     } catch (error){
         console.error("error", error.message);
+        localStorage.removeItem("authToken")
         throw error;
     }
 }
