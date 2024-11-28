@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+
+  main {
+    padding: 0;
+
+    #communities {
+      border-top: 1px solid #ddd;
+      flex: 1;
+
+      .community{
+        background-color: #fff;
+        margin: 20px auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        width: 80%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+
+        .name{
+          font-size: 18px
+        }
+
+        .subscribe-button{
+          border-radius: 8px;
+          background-color: blue;
+        }
+
+        .unsubscribe-button{
+          border-radius: 8px;
+          background-color:red;
+        }
+      }
+    }
+  }
+}
