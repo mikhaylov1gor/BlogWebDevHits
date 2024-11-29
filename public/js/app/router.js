@@ -5,6 +5,7 @@ import{initializeHomePage} from "./home.js";
 import{initializeAuthorsPage} from "./authors.js"
 import{loadHeader} from "./header.js"
 import {initializeCommunitiesPage} from "./communities.js";
+import {initializeCreatePostPage} from "./createPost.js";
 
 
 const routes = {
@@ -13,7 +14,8 @@ const routes = {
     "/registration": "/templates/registration.html",
     "/profile": "/templates/profile.html",
     "/authors": "/templates/authors.html",
-    "/communities": "/templates/communities.html"
+    "/communities": "/templates/communities.html",
+    "/post/create": "/templates/createPost.html"
 };
 
 export const loadTemplate = async (path) => {
@@ -46,10 +48,12 @@ export async function switchRouting(path) {
         case "/authors":
             await initializeAuthorsPage();
             break
-
         case "/communities":
             await initializeCommunitiesPage();
             break;
+        case "/post/create":
+            await initializeCreatePostPage();
+            break
     }
 }
 

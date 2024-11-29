@@ -18,6 +18,32 @@ export async function getCommunities(){
         throw error;
     }
 }
+
+export async function getMyCommunities() {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+        throw new Error("Unauthorized");
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/community/my`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Subscribe failed")
+        }
+    } catch (error) {
+        console.error("get communities failed", error.message);
+        throw error;
+    }
+}
+
 export async function subscribe(id){
     const token = localStorage.getItem("authToken");
 

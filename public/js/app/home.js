@@ -1,18 +1,34 @@
-import{getTagList} from "../api/tag.js";
-import{getPosts} from "../api/post.js";
+import {getPosts, likePost, unLikePost} from "../api/post.js";
+import {navigateTo} from "./router.js";
+import {loadTags} from "./app.js";
 
-function loadPost(post) {
+async function loadPost(post) {
     const postElement = document.createElement('div');
     postElement.classList.add('post');
 
     // шапка
-    const header = `
+    const apiTime = new Date(post.createTime);
+    const formattedTime = apiTime.toLocaleString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+    let header = `
             <header>
-                <h3>${post.author} - ${post.createTime} в сообществе "${post.communityName}"</h3>
+                <h3>${post.author} - ${formattedTime} в сообществе "${post.communityName}"</h3>
                 <h1>${post.title}</h1>
             </header>
         `;
-
+    if (!post.communityId) {
+        header = `
+            <header>
+                <h3>${post.author} - ${formattedTime}</h3>
+                <h1>${post.title}</h1>
+            </header>
+        `;
+    }
     // описание
     const maxLength = 1000;
     const isLong = post.description.length > maxLength;
@@ -50,18 +66,49 @@ function loadPost(post) {
 
     // футер
     const footer = `
-            <div class="post-footer">
-                <button class="comment-button">
-                    <i class="fas fa-comment"></i> Комментарии <span class="comment-count">(${post.commentsCount})</span>
-                </button>
-                <button class="like-button">
-                    <i class="fas fa-thumbs-up"></i> Лайк <span class="like-count">(${post.likes})</span>
-                </button>
-            </div>
+        <div class="post-footer">
+            <button id="comment-button">
+                <img src="../../icons/comments.png" class="small-icon" alt="comments">
+                <span class="comment-count">${post.commentsCount}</span>
+            </button>
+            <button id="like-button">
+                <img src="../../icons/like.png" class="small-icon" alt="likes" id="like-icon">
+                <span class="like-count" id="like-count">${post.likes}</span>
+            </button>
+        </div>
         `;
 
     // сборка по частям
     postElement.innerHTML = header + description + small + footer;
+
+    const likeButton = postElement.querySelector("#like-button");
+    const likeIcon = postElement.querySelector("#like-icon");
+    const likeCount = postElement.querySelector("#like-count");
+
+    if (post.hasLike) {
+        likeIcon.src = "../../icons/filledLike.png"
+    }
+
+    let isLiked = post.hasLike;
+
+    likeButton.addEventListener("click", () => {
+        try {
+            if (isLiked) {
+                isLiked = false;
+                unLikePost(post.id);
+                likeIcon.src = "../../icons/like.png"
+                likeCount.textContent = (parseInt(likeCount.textContent) - 1).toString();
+            } else {
+                isLiked = true;
+                likePost(post.id);
+                likeIcon.src = "../../icons/filledLike.png"
+                likeCount.textContent = (parseInt(likeCount.textContent) + 1).toString();
+            }
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    })
+
 
     if (isLong) {
         const showMoreLink = postElement.querySelector("#show-more");
@@ -83,7 +130,6 @@ function loadPost(post) {
             showMoreLink.style.display = "inline";
         })
     }
-
     return postElement;
 }
 
@@ -103,22 +149,12 @@ export async function initializeHomePage() {
     }
 
     // загрузка тегов
-    const tagsSelect = document.getElementById("tags");
+    await loadTags();
 
-    try {
-        const tags = await getTagList();
-
-        tagsSelect.innerHTML = "";
-
-        tags.forEach(tag => {
-            const option = document.createElement("option");
-            option.value = tag.id;
-            option.textContent = tag.name;
-            tagsSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Ошибка при загрузке тегов:", error.message);
-    }
+    const createPostButton = document.getElementById("create-post-button");
+    createPostButton.addEventListener("click", () => {
+        navigateTo("/post/create");
+    });
 
     document.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -133,21 +169,26 @@ export async function initializeHomePage() {
         const size = document.getElementById("pageSize").value;
         document.getElementById("pagination").style.display = "flex";
 
+        const loading = document.getElementById("loading");
+        const postsContainer = document.getElementById('posts');
+        loading.style.display = "block";
+        postsContainer.style.display = "none";
+        postsContainer.innerHTML = '';
         getPosts(tags, author, min, max, sorting, onlyMyCommunities, page, size)
-            .then(data => {
-                console.log(data);
-                const postsContainer = document.getElementById('posts'); // Контейнер для постов
-                postsContainer.innerHTML = '';
-
-
-                data.posts.forEach(post => {
-                    const postElement = loadPost(post);
+            .then(async data => {
+                for (const post of data.posts) {
+                    const postElement = await loadPost(post);
                     postsContainer.appendChild(postElement);
-                });
+                }
             })
             .catch(error => {
                 console.error("ошибка при загрузке постов", error)
             })
+            .finally(()=>{
+                postsContainer.style.display = "block";
+                loading.style.display = "none";
+            })
+
 
     });
 }

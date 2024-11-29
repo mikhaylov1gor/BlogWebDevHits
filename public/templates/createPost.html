@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/createPost.css">
+</head>
+<body>
+<main>
+    <section id ="container">
+        <div class="form">
+            <header>
+                <h2>Написать новый пост</h2>
+            </header>
+            <div class="row">
+                <div class="input-group" style="width: 75%;">
+                    <label for="name">Название</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="input-group" style="width: 25%;">
+                    <label for="time-reading">Время чтения</label>
+                    <input type="text" id="time-reading" name="time-reading">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group" style="width: 50%;">
+                    <label for="group">Группа</label>
+                    <select id="group" multiple name="group" style="height: 20px;"></select>
+                </div>
+                <div class="input-group" style="width: 50%;">
+                    <label for="tags">Тэги</label>
+                    <select id="tags" multiple name="tags" style="height: 60px;"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group" style="width: 100%;">
+                    <label for="image">Ссылка на картинку</label>
+                    <input type="text" id="image" name="image">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group" style="width: 100%;">
+                    <label for="text">Текст</label>
+                    <textarea id="text" name="text" rows="10" style="width: 100%; resize: vertical;"></textarea>
+                </div>
+            </div>
+            <header>
+                <h2>Адрес</h2>
+            </header>
+            <div class="row">
+                <div class="input-group" style="width: 100%;">
+                    <label for="address">Субъект РФ</label>
+                    <input type="text" id="address" name="address">
+                </div>
+            </div>
+            <button id="confirm-button" type="submit" style="margin-left: auto">Создать пост</button>
+        </div>
+    </section>
+</main>
+
+<script src="../js/app/createPost.js" type ="module" defer></script>
+</body>
+</html>

@@ -21,6 +21,16 @@ export const loadHeader = async() =>{
             document.getElementById("communities-link").style.display = "compact";
             document.getElementById("authors-link").style.display ="compact";
 
+            if(window.location.pathname === "/profile"){
+                document.getElementById("create-post-link").style.display = "inline";
+                document.getElementById("authors-link").style.display = "none";
+                document.getElementById("communities-link").style.display = "none";
+            }
+            else{
+                document.getElementById("create-post-link").style.display = "none";
+                document.getElementById("authors-link").style.display = "inline";
+                document.getElementById("communities-link").style.display = "inline";
+            }
             if (userMenu && userEmail) {
                 const userData = await getProfileApi()
                 userMenu.style.display = "block";
@@ -56,6 +66,7 @@ export const loadHeader = async() =>{
             const loginButton = document.getElementById("login-button");
             document.getElementById("communities-link").style.display = "none";
             document.getElementById("authors-link").style.display = "none";
+            document.getElementById("create-post-link").style.display = "none";
 
             userMenu.style.display = "none";
 

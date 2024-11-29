@@ -85,7 +85,7 @@ export async function getProfileApi(){
     const token = localStorage.getItem("authToken");
 
     if (!token){
-        throw new Error('Unauthorized');
+        throw new Error('Unauthorized');        throw new Error('Unauthorized');
     }
 
     try{
