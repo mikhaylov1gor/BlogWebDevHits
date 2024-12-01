@@ -1,6 +1,6 @@
 import {rendering,navigateTo} from "./router.js";
 import {getTagList} from "../api/tag.js";
-import {getMyCommunities} from "../api/community.js";
+import {getCommunity, getMyCommunities} from "../api/community.js";
 
 document.addEventListener("DOMContentLoaded", () =>{
     rendering();
@@ -31,12 +31,20 @@ export async function loadGroups(){
     try{
         const groups = await getMyCommunities();
 
-        groups.forEach(group => {
-            const option = document.createElement("option");
-            option.value = group.id;
-            option.textContent = group.id;
-            groupsSelect.appendChild(option);
-        });
+        console.log(groups);
+
+
+        for (const group of groups) {
+            if(group.role === "Administrator") {
+                const community = await getCommunity(group.communityId);
+                console.log(community);
+                const option = document.createElement("option");
+
+                option.value = group.communityId;
+                option.textContent = community.name;
+                groupsSelect.appendChild(option);
+            }
+        }
     } catch (error) {
         console.error("ошибка загрузки сообществ:", error.message);
     }

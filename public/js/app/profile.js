@@ -30,7 +30,6 @@ export async function initializeProfilePage() {
             const phone = authForm.querySelector("#phone").value;
 
             await editProfileApi(email, name, birthDate, gender, phone)
-            rendering();
         } catch (error) {
             console.error("Ошибка при сохранении данных профиля:", error.message);
         }

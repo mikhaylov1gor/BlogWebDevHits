@@ -38,6 +38,51 @@ export async function getPosts(tags,author,min,max,sorting,onlyMyCommunities,pag
     }
 }
 
+export async function createPost(title,description,readingTime,image,addressId,tags){
+    const token = localStorage.getItem("authToken");
+
+    if (!token){
+        throw new Error("Unauthorized");
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/post`, {
+            method: "POST",
+            headers:{
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({title, description, readingTime, image, addressId, tags})
+        });
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || "create post failed")
+        }
+
+        return await response.json();
+
+    } catch (error){
+        console.error("error", error.message);
+        throw error;
+    }
+}
+
+export async function getPost(postId){
+    try{
+        const response = await fetch(`${API_URL}/post/${postId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": `application/json`,
+            }
+        });
+
+    } catch (error){
+        console.error("error", error.message);
+        throw error;
+    }
+}
+
 export async function likePost(postId){
     const token = localStorage.getItem("authToken");
 
@@ -68,7 +113,6 @@ export async function unLikePost(postId){
     }
 
     try{
-
         const response = await fetch(`${API_URL}/post/${postId}/like`, {
             method: "DELETE",
             headers: {

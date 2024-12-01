@@ -38,8 +38,33 @@ export async function getMyCommunities() {
             const errorData = await response.json();
             throw new Error(errorData.message || "Subscribe failed")
         }
+
+        return await response.json();
+
     } catch (error) {
         console.error("get communities failed", error.message);
+        throw error;
+    }
+}
+
+export async function getCommunity(id){
+    try {
+        const response = await fetch(`${API_URL}/community/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": `application/json`
+            },
+        });
+
+        if (!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || "get concrete community failed")
+        }
+
+        return await response.json()
+
+    } catch(error){
+        console.error("Subscribe failed", error.message);
         throw error;
     }
 }
@@ -60,10 +85,9 @@ export async function subscribe(id){
 
         if (!response.ok){
             const errorData = await response.json();
+            console.error("Subscribe failed", errorData.message);
             throw new Error(errorData.message || "Subscribe failed")
         }
-
-        return await response.json()
 
     } catch(error){
         console.error("Subscribe failed", error.message);
@@ -87,10 +111,9 @@ export async function unSubscribe(id){
 
         if (!response.ok){
             const errorData = await response.json();
+            console.error("Unsubscribe failed", errorData.message);
             throw new Error(errorData.message || "Unsubscribe failed")
         }
-
-        return await response.json()
 
     } catch(error){
         console.error("Unsubscribe failed", error.message);

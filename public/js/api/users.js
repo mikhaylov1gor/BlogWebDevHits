@@ -43,7 +43,7 @@ export async function loginApi(email,password){
 
         const data = await response.json();
         localStorage.setItem("authToken", data.token);
-        return data
+        return data;
 
     } catch(error){
         console.error("Login failed", error.message);
@@ -112,7 +112,7 @@ export async function getProfileApi(){
 
 export async function editProfileApi(email,fullName,birthDate,gender,phoneNumber){
     const token = localStorage.getItem("authToken");
-
+    console.log(token);
     if (!token){
         throw new Error('Unauthorized');
     }
@@ -132,8 +132,7 @@ export async function editProfileApi(email,fullName,birthDate,gender,phoneNumber
             throw new Error(errorData.message || "EditProfile failed")
         }
 
-        const responseBody = await response.text();
-        return responseBody ? JSON.parse(responseBody) : null;
+        return await response.text();
 
     } catch (error){
         console.error("error", error.message);

@@ -188,7 +188,5 @@ export async function initializeHomePage() {
                 postsContainer.style.display = "block";
                 loading.style.display = "none";
             })
-
-
     });
 }

@@ -60,7 +60,6 @@ export async function switchRouting(path) {
 export const rendering = async () => {
     const app = document.getElementById("app");
     const route = routes[window.location.pathname];
-    console.log(route);
     if (!route) {
         app.innerHTML = "<h1>404 - Страница не найдена</h1>";
         return;
