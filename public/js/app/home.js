@@ -2,11 +2,16 @@ import {getPosts, likePost, unLikePost} from "../api/post.js";
 import {navigateTo} from "./router.js";
 import {loadTags} from "./app.js";
 
-export async function loadPost(post) {
-    const postElement = document.createElement('div');
-    postElement.classList.add('post');
+export async function loadPost(post){
+    const response = await fetch("/templates/post.html");
+    if (!response.ok) {
+        throw new Error("Не удалось загрузить шаблон поста");
+    }
 
-    // шапка
+    const postElement = document.createElement('div');
+    postElement.innerHTML = await response.text();
+
+    // заполнение шапки
     const apiTime = new Date(post.createTime);
     const formattedTime = apiTime.toLocaleString("ru-RU", {
         day: "2-digit",
@@ -15,75 +20,51 @@ export async function loadPost(post) {
         hour: "2-digit",
         minute: "2-digit",
     });
-    let header = `
-            <header>
-                <h3>${post.author} - ${formattedTime} в сообществе "${post.communityName}"</h3>
-                <h1>${post.title}</h1>
-            </header>
-        `;
-    if (!post.communityId) {
-        header = `
-            <header>
-                <h3>${post.author} - ${formattedTime}</h3>
-                <h1>${post.title}</h1>
-            </header>
-        `;
+
+    if (post.communityId){
+        postElement.querySelector("#author").textContent = `${post.author} - ${formattedTime} в сообществе "${post.communityName}"`;
+    } else{
+        postElement.querySelector("#author").textContent = `${post.author} - ${formattedTime}`;
     }
-    // описание
+    postElement.querySelector("#title").textContent = `${post.title}`;
+
+    // заполнение описания
+    if (post.image) {
+        const imageElement = postElement.querySelector("#image");
+        imageElement.src = post.image;
+        imageElement.style.display = "block";
+    } else {
+        postElement.querySelector("#image").style.display = "none";
+    }
+
     const maxLength = 1000;
     const isLong = post.description.length > maxLength;
     let postDescription = isLong ? post.description.substring(0, maxLength) : post.description;
     const lastPoint = postDescription.lastIndexOf(".")
     postDescription = postDescription.substring(0, lastPoint + 1);
 
-    let imageHTML = "";
-    if (post.image) {
-        imageHTML = `<img src="${post.image}" alt="image" class="post-image">`;
-    }
+    postElement.querySelector("#post-text").textContent = `${postDescription}`;
+    postElement.querySelector("#tags").textContent = post.tags.map(tag => `#${tag.name}`).join(' ');
+    postElement.querySelector("#readingTime").textContent = `Время чтения: ${post.readingTime} мин`;
 
-    const description = `
-            ${imageHTML}
-            <p id ="post-text">
-                ${postDescription}
-            </p>
-            <a href="#" id="show-more" style="display: none;">
-                Читать полностью
-            </a>
-            <a href="#" id="show-less" style="display: none;">
-                Скрыть
-            </a>
-        `;
+    // заполнение футера
+    postElement.querySelector("#comments-count").textContent = `${post.commentsCount}`;
+    postElement.querySelector("#likes-count").textContent = `${post.likes}`;
 
-    // теги и время чтения
-    const tagsHTML = post.tags.map(tag => `</small>#${tag.name}</small>`).join(' ');
+    // обработчики событий
+    postElement.querySelector("#title").addEventListener("click", (e)=> {
+        e.preventDefault();
+        navigateTo(`/post/${post.id}`);
+    });
 
-    const small = `
-            <div id="small-container">
-                ${tagsHTML}
-                <small>Время чтения: ${post.readingTime} мин;</small>
-            </div>
-        `;
-
-    // футер
-    const footer = `
-        <div class="post-footer">
-            <button id="comment-button">
-                <img src="../../icons/comments.png" class="small-icon" alt="comments">
-                <span class="comment-count">${post.commentsCount}</span>
-            </button>
-            <button id="like-button">
-                <img src="../../icons/like.png" class="small-icon" alt="likes" id="like-icon">
-                <span class="like-count" id="like-count">${post.likes}</span>
-            </button>
-        </div>
-        `;
-
-    // сборка по частям
-    postElement.innerHTML = header + description + small + footer;
+    postElement.querySelector("#comment-button").addEventListener("click", (e)=> {
+        e.preventDefault();
+        navigateTo(`/post/${post.id}`);
+    });
 
     const likeButton = postElement.querySelector("#like-button");
     const likeIcon = postElement.querySelector("#like-icon");
-    const likeCount = postElement.querySelector("#like-count");
+    const likeCount = postElement.querySelector("#likes-count");
 
     if (post.hasLike) {
         likeIcon.src = "../../icons/filledLike.png"
@@ -109,7 +90,6 @@ export async function loadPost(post) {
         }
     })
 
-
     if (isLong) {
         const showMoreLink = postElement.querySelector("#show-more");
         const showLessLink = postElement.querySelector("#show-less");
@@ -132,6 +112,7 @@ export async function loadPost(post) {
     }
     return postElement;
 }
+
 
 export async function initializeHomePage() {
     const form = document.querySelector("main");

@@ -1,12 +1,13 @@
-import{initializeLoginPage} from "./login.js"
-import{initializeRegistrationPage} from "./registration.js"
-import{initializeProfilePage} from "./profile.js";
-import{initializeHomePage} from "./home.js";
-import{initializeAuthorsPage} from "./authors.js"
-import{loadHeader} from "./header.js"
+import {initializeLoginPage} from "./login.js"
+import {initializeRegistrationPage} from "./registration.js"
+import {initializeProfilePage} from "./profile.js";
+import {initializeHomePage} from "./home.js";
+import {initializeAuthorsPage} from "./authors.js"
+import {loadHeader} from "./header.js"
 import {initializeCommunitiesPage} from "./communities.js";
 import {initializeCreatePostPage} from "./createPost.js";
 import {initializeCommunityPage} from "./communityPage.js";
+import {initializePostPage} from "./postPage.js";
 
 const routes = {
     "/": "/templates/home.html",
@@ -67,20 +68,27 @@ export async function switchRouting(path) {
 export const rendering = async () => {
     const app = document.getElementById("app");
 
-    // переход на страницу сообщества
+    // переход на страницу сообщества или поста
     const path = window.location.pathname;
     const communityPageRegex = /^\/communities\/([a-fA-F0-9-]+)$/;
-    const match = path.match(communityPageRegex);
+    const postPageRegex = /^\/post\/([a-fA-F0-9-]+)$/;
+    const matchCommunity = path.match(communityPageRegex);
+    const matchPost = path.match(postPageRegex);
 
-    if (match) {
-        const communityId = match[1];
+    if (matchCommunity) {
+        const communityId = matchCommunity[1];
         await loadHeader();
-        const html = await loadTemplate("/templates/communityPage.html");
-        app.innerHTML = html;
+        app.innerHTML = await loadTemplate("/templates/communityPage.html");
         await initializeCommunityPage(communityId);
         return;
     }
-
+    else if (matchPost){
+        const postId = matchPost[1];
+        await loadHeader();
+        app.innerHTML = await loadTemplate("/templates/postPage.html");
+        await initializePostPage(postId);
+        return;
+    }
 
     const route = routes[window.location.pathname];
     if (!route) {
@@ -88,8 +96,7 @@ export const rendering = async () => {
         return;
     }
     await loadHeader();
-    const html = await loadTemplate(route);
-    app.innerHTML = html;
+    app.innerHTML = await loadTemplate(route);
 
     await switchRouting(window.location.pathname);
 };
