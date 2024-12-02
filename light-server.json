@@ -3,11 +3,9 @@
   "watched": [
     "public/css",
     "public/js",
-    "public/js/app",
-    "public/js/api",
     "public/templates",
     "public/*.html"
   ],
   "serve": "public",
-  "historyFallback": "/index.html"
+  "historyFallback": "index.html"
 }

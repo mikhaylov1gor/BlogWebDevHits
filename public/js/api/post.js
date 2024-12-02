@@ -16,9 +16,6 @@ export async function getPosts(tags,author,min,max,sorting,onlyMyCommunities,pag
 
         tags.forEach(tag => params.append("tags", tag));
 
-        console.log(`${API_URL}/post?${params.toString()}`);
-
-
         const response = await fetch(`${API_URL}/post?${params.toString()}`, {
             method: "GET",
             headers: {

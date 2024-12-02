@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <script src="../js/app/communityPage.js" type="module" defer></script>
+</head>
+<body>
+<main>
+    <section id="group">
+        <form id="group-form">
+            <header>
+                <div class="filter-row">
+                <h1 id ="group-name"></h1>
+                    <button id="create-post-button"></button>
+                    <button id="subscribe-button"></button>
+                </div>
+            </header>
+            <div class="filter-row">
+                <h2 id="subs-count"></h2>
+            </div>
+            <div class="filter-row">
+                <h3 id="community-type"></h3>
+            </div>
+            <header>
+                <h1>Авторы</h1>
+            </header>
+            <div id="authors">
+                <div class="author">
+                    <div class="avatar Female"></div>
+                    <div class="info">
+                        <div class="name">Гриша</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section id="filters">
+        <form id="filter-form">
+            <header>
+                <h2>Фильтры</h2>
+            </header>
+            <div class="filter-row">
+                <div class="input-group" style="width: 50%;">
+                    <label for="sorting">Сортировать</label>
+                    <select id="sorting" name="sorting">
+                        <option value="CreateDesc">По дате создания (сначала новые)</option>
+                        <option value="CreateAsc">По дате создания (сначала старые)</option>
+                        <option value="LikeAsc">По количеству лайков(возрастание)</option>
+                        <option value="LikeDesc">По количеству лайков(убывание)</option>
+                    </select>
+                </div>
+                <div class="input-group" style="width: 50%;">
+                    <label for="tags">Поиск по тегам</label>
+                    <select id="tags" multiple name="tags">
+                        <!--тут теги будут !-->
+                    </select>
+                </div>
+            </div>
+            <div class="filter-row">
+                <button id="confirm-button" type="submit" style="margin-left: auto">Применить</button>
+            </div>
+        </form>
+    </section>
+
+    <div id="loading" style="display: none;">
+        <div id="load">
+            <div>G</div>
+            <div>N</div>
+            <div>I</div>
+            <div>D</div>
+            <div>A</div>
+            <div>O</div>
+            <div>L</div>
+        </div>
+    </div>
+
+
+    <section id="posts">
+        <!-- тут посты будут !-->
+    </section>
+
+    <div id="pagination" style="display: none;">
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">&raquo;</a>
+        </div>
+        <div class="page-size">
+            <label for="pageSize">Размер страницы:</label>
+            <select id="pageSize">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="1000">1000</option>
+            </select>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>&copy;2024 - Блог №415</p>
+</footer>
+</body>
+</html>

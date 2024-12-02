@@ -2,7 +2,7 @@ import {getPosts, likePost, unLikePost} from "../api/post.js";
 import {navigateTo} from "./router.js";
 import {loadTags} from "./app.js";
 
-async function loadPost(post) {
+export async function loadPost(post) {
     const postElement = document.createElement('div');
     postElement.classList.add('post');
 

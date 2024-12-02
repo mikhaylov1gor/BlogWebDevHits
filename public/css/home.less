@@ -37,7 +37,7 @@ body {
       font-size: 14px;
     }
 
-    #filters {
+    #filters, #group {
       background-color: #fff;
       margin: auto;
       padding: 10px;
@@ -56,6 +56,37 @@ body {
         display: flex;
         flex-direction: column;
         gap: 5px;
+
+        #authors {
+          border-top: 1px solid #ddd;
+          flex: 1;
+
+          .author {
+            background-color: #fff;
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+
+            .avatar {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-size: cover;
+              background-position: center;
+
+              &.Male {
+                background-image: url('../icons/man.png');
+              }
+
+              &.Female {
+                background-image: url('../icons/woman.png');
+              }
+            }
+          }
+        }
 
         .filter-row {
           display: flex;
@@ -102,6 +133,7 @@ body {
           &:hover {
             background-color: #0056b3;
           }
+
         }
       }
     }

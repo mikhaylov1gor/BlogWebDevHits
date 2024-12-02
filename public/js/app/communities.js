@@ -1,4 +1,5 @@
 import {getCommunities, getMyCommunities, subscribe, unSubscribe} from "../api/community.js";
+import {navigateTo} from "./router.js";
 
 function toggle(button, isSubscribed) {
     if (isSubscribed) {
@@ -21,10 +22,16 @@ async function loadCommunity(community, myCommunities) {
     const buttonText = isSubscribed ? "Отписаться" : "Подписаться";
 
     communityElement.innerHTML = `
-        <a href ="#" class="name">${community.name}</a>
-        <button id="button" class="${buttonClass}">${buttonText}</button>
-    `;
+            <a href ="#" class="name" data-link data-id="${community.id}">${community.name}</a>
+            <button id="button" class="${buttonClass}">${buttonText}</button>
+        `;
 
+    const communityLink = communityElement.querySelector("a");
+    communityLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        const communityId = communityLink.getAttribute("data-id");
+        navigateTo(`/communities/${communityId}`);
+    });
 
     const isMyCommunity = myCommunities.some(myCommunity => myCommunity.communityId === community.id && myCommunity.role === "Administrator")
     if (isMyCommunity) {

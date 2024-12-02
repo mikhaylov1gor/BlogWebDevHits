@@ -6,7 +6,7 @@ import{initializeAuthorsPage} from "./authors.js"
 import{loadHeader} from "./header.js"
 import {initializeCommunitiesPage} from "./communities.js";
 import {initializeCreatePostPage} from "./createPost.js";
-
+import {initializeCommunityPage} from "./communityPage.js";
 
 const routes = {
     "/": "/templates/home.html",
@@ -15,12 +15,11 @@ const routes = {
     "/profile": "/templates/profile.html",
     "/authors": "/templates/authors.html",
     "/communities": "/templates/communities.html",
-    "/post/create": "/templates/createPost.html"
+    "/post/create": "/templates/createPost.html",
 };
 
 export const loadTemplate = async (path) => {
     try {
-        console.log(path)
         const response = await fetch(path);
         if (!response.ok) throw new Error(`Не удалось загрузить: ${path}`);
         return await response.text();
@@ -32,9 +31,17 @@ export const loadTemplate = async (path) => {
 };
 
 export async function switchRouting(path) {
+    const communityPageRegex = /^\/communities\/([a-fA-F0-9-]+)$/;
+
+    if (communityPageRegex.test(path)) {
+        const communityId = path.match(communityPageRegex)[1];
+        await initializeCommunityPage(communityId);
+        return;
+    }
+
     switch (path) {
         case "/":
-            initializeHomePage();
+            await initializeHomePage();
             break;
         case "/login":
             initializeLoginPage();
@@ -53,12 +60,28 @@ export async function switchRouting(path) {
             break;
         case "/post/create":
             await initializeCreatePostPage();
-            break
+            break;
     }
 }
 
 export const rendering = async () => {
     const app = document.getElementById("app");
+
+    // переход на страницу сообщества
+    const path = window.location.pathname;
+    const communityPageRegex = /^\/communities\/([a-fA-F0-9-]+)$/;
+    const match = path.match(communityPageRegex);
+
+    if (match) {
+        const communityId = match[1];
+        await loadHeader();
+        const html = await loadTemplate("/templates/communityPage.html");
+        app.innerHTML = html;
+        await initializeCommunityPage(communityId);
+        return;
+    }
+
+
     const route = routes[window.location.pathname];
     if (!route) {
         app.innerHTML = "<h1>404 - Страница не найдена</h1>";
@@ -70,10 +93,10 @@ export const rendering = async () => {
 
     await switchRouting(window.location.pathname);
 };
-export const navigateTo = (url) => {
-    history.pushState(null, null, url);
+export function navigateTo(path) {
+    history.pushState(null, null, path);
     rendering();
-};
+}
 
 document.addEventListener("click", (e) => {
     if (e.target.matches("[data-link]")) {
@@ -82,4 +105,4 @@ document.addEventListener("click", (e) => {
     }
 });
 
-window.addEventListener("popstate", rendering);
+window.onpopstate = () => rendering();
