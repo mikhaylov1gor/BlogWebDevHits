@@ -25,3 +25,29 @@ export async function getAddress(parentObjectId,query) {
         throw error;
     }
 }
+
+export async function getAddressChain(id){
+    try {
+        const params = new URLSearchParams({
+            objectGuid: id,
+        })
+
+        const response = await fetch(`${API_URL}/address/chain?${params}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "get address chain failed")
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error("get address chain failed", error.message);
+        throw error;
+    }
+}

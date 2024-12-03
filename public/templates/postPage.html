@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/home.css">
-    <script src="../js/app/communityPage.js" type="module" defer></script>
 </head>
 <body>
 <main>
     <section id="posts">
         <!-- тут посты будут !-->
     </section>
+
+    <section id="comments-container">
+        <div id="comments">
+            <header>
+                <h3>Комментарии</h3>
+            </header>
+            <div id="comments-bodies">
+
+            </div>
+
+            <form id="new-comment">
+                <textarea id="description" name="description" placeholder="Оставьте комментарий"></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </section>
 </main>
 
 <footer>
     <p>&copy;2024 - Блог №415</p>
 </footer>
+
+<script src="../js/app/communityPage.js" type="module" defer></script>
 
 </body>
 </html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<div class="comment">
+    <div class="comment-header">
+        <strong id="comment-name"></strong>
+        <button id="delete-button" style="display: none;">🗑️</button>
+        <button id="edit-button" style="display: none;">✏️</button>
+    </div>
+    <div class="row" id="edit-row" style="display: none;">
+        <textarea id="modify-text" name="modify" style="width: 80%" placeholder="Измените комментарий"></textarea>
+        <button id="edit-button-submit">Редактировать</button>
+    </div>
+    <p id="comment-description"></p>
+    <small id="comment-date"></small>
+    <a href="#" id="reply">Ответить</a>
+    <div class="row" id="reply-row" style="display: none;">
+        <textarea id="reply-text" name="reply" style="width: 80%" placeholder="Оставьте комментарий"></textarea>
+        <button id="reply-button-submit">Отправить</button>
+    </div>
+    <a href="#" id="show-replies" class="toggle-replies">Раскрыть ответы</a>
+</div>
+</body>
+</html>

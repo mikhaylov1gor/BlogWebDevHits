@@ -78,6 +78,6 @@ export const loadHeader = async() =>{
 
 
     } catch (error) {
-        console.error("Ошибка загрузки header:", error.message);
+        alert("Ошибка при загрузке header: " + error.message);
     }
 };

@@ -26,7 +26,7 @@ export function initializeLoginPage() {
                 window.location.href = "/";
             }
         } catch (error) {
-            document.getElementById("login-error").textContent = error.message;
+            alert("Ошибка авторизации: " + error.message);
         }
     });
 }

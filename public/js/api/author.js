@@ -8,13 +8,13 @@ export async function getAuthors(){
 
         if (!response.ok){
             const errorData = await response.json();
-            throw new Error(errorData.message || "Registration failed")
+            throw new Error(errorData.message || "get authors failed")
         }
 
         return await response.json();
 
     } catch(error){
-        console.error("Login failed", error.message);
+        console.error("get authors failed", error.message);
         throw error;
     }
 }

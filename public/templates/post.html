@@ -22,15 +22,21 @@
         Скрыть
     </a>
     <div id="small-container">
-        <small id ="tags"></small>
+        <small id="tags"></small>
         <small id ="readingTime"></small>
+        <small id ="address" style="display: none;">
+            <img src="../icons/location.png" alt="address icon" class="small-icon">
+            <span id="address-text"></span>
+        </small>
     </div>
     <div class="post-footer">
-        <button class="comment-button">
-            <i class="fas fa-comment"></i><span id="comments" class="comment-count"></span>
+        <button id="comment-button">
+            <img src="../icons/comments.png" class="small-icon" alt="comments">
+            <span id="comments-count" class="comment-count"></span>
         </button>
-        <button class="like-button">
-            <i class="fas fa-thumbs-up"></i><span id="lis" class="like-count"></span>
+        <button id="like-button">
+            <img src="../icons/like.png" class="small-icon" alt="likes" id="like-icon">
+            <span id="likes-count" class="like-count"></span>
         </button>
     </div>
 </div>

@@ -173,15 +173,17 @@ export async function initializeCreatePostPage(){
     const createButton = document.getElementById("confirm-button")
 
     createButton.addEventListener("click", async () => {
+
+        const title = document.getElementById("name").value;
+        const description = document.getElementById("text").value;
+        const readingTime = document.getElementById("time-reading").value;
+        const image = document.getElementById("image").value === "" ? null : document.getElementById("image").value;
+        const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
+
         try {
-            const title = document.getElementById("name").value;
-            const description = document.getElementById("text").value;
-            const readingTime = document.getElementById("time-reading").value;
-            const image = document.getElementById("image").value;
-            const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
             await createPost(title, description, readingTime, image, address, tags)
         } catch (error) {
-            console.error("ошибка при создании поста", error)
+            alert("Ошибка создания поста: " + error.message);
         }
     })
 }

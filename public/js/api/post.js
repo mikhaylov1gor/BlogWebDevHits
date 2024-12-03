@@ -57,10 +57,10 @@ export async function createPost(title,description,readingTime,image,addressId,t
             throw new Error(errorData.message || "create post failed")
         }
 
-        return await response.json();
+        window.location.href="/";
 
     } catch (error){
-        console.error("error", error.message);
+        console.error("create post failed", error.message);
         throw error;
     }
 }
@@ -73,6 +73,13 @@ export async function getPost(postId){
                 "Content-Type": `application/json`,
             }
         });
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || "get post failed")
+        }
+
+        return await response.json();
 
     } catch (error){
         console.error("error", error.message);

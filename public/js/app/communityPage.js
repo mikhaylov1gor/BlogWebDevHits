@@ -32,7 +32,6 @@ export async function initializeCommunityPage(communityId) {
     }
 
     const communityData = await getCommunity(communityId);
-    console.log(communityData);
     document.querySelector("#group-name").textContent = `Группа ${communityData.name}`;
     document.querySelector("#subs-count").textContent = `${communityData.subscribersCount} подписчиков`;
     document.querySelector("#community-type").textContent = `тип сообщества: ${communityData.isClosed === true ? "закрытое" : "открытое"}`;
@@ -65,7 +64,7 @@ export async function initializeCommunityPage(communityId) {
                 }
             })
             .catch(error => {
-                console.error("ошибка при загрузке постов", error)
+                alert("Ошибка при загрузке страницы сообщества: " + error.message);
             })
             .finally(()=>{
                 postsContainer.style.display = "block";

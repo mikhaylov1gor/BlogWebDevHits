@@ -1,43 +1,70 @@
 import{getAuthors} from "../api/author.js";
 
-function loadAuthors(authors){
-    const container = document.getElementById("authors");
-
-    try {
-        container.innerHTML = "";
-
-        authors.forEach((author) => {
-
-            const authorElement = document.createElement("div");
-            authorElement.classList.add("author");
-
-            authorElement.innerHTML = `
-        <div class="avatar ${author.gender}"></div>
-        <div class="info">
-          <div class="name">${author.fullName}
-            <div class="create" > Создан: ${author.created}</div>
-          </div>
-          <div class="stats">
-            Дата рождения: ${author.birthDate}<br>
-            Постов: ${author.posts}, Лайков: ${author.likes}
-          </div>
-        </div>
-      `;
-            container.appendChild(authorElement);
-        });
-    } catch (error) {
-        container.innerHTML = "<p>Ошибка при загрузке авторов</p>";
+export async function loadAuthor(author, rank) {
+    const response = await fetch("/templates/author.html");
+    if (!response.ok) {
+        console.error(`Ошибка загрузки шаблона: ${response.statusText}`);
+        throw new Error("Не удалось загрузить шаблон автора");
     }
+
+    const authorElement = document.createElement('div');
+    authorElement.innerHTML = await response.text();
+
+    switch (rank){
+        case 1:
+            authorElement.querySelector("#avatar").classList.add("popular-1");
+            break;
+        case 2:
+            authorElement.querySelector("#avatar").classList.add("popular-2");
+            break;
+        case 3:
+            authorElement.querySelector("#avatar").classList.add("popular-3");
+            break;
+    }
+
+
+    authorElement.querySelector("#avatar").classList.add(author.gender);
+    authorElement.querySelector("#name").textContent = `${author.fullName}` || "Anonymous";
+    authorElement.querySelector("#create").textContent = `Создан: ${new Date(author.created).toLocaleDateString("ru-RU")}`;
+    authorElement.querySelector("#birthData").textContent = `Дата рождения: ${new Date(author.birthDate).toLocaleDateString("ru-RU")}`
+    authorElement.querySelector("#posts").textContent = `Постов ${author.posts || 0}`;
+    authorElement.querySelector("#likes").textContent = `Лайков ${author.likes || 0}`;
+
+    return authorElement;
 }
 
-export async function initializeAuthorsPage(){
+export async function initializeAuthorsPage() {
     const form = document.querySelector("main");
-
     if (!form) {
         return;
     }
 
-    const authorData = await getAuthors();
-    console.log(authorData)
-    loadAuthors(authorData)
+    const authorContainer = document.getElementById("authors");
+    authorContainer.innerHTML = "";
+
+    const authors = await getAuthors();
+
+
+    const popularAuthors = [...authors].sort((a, b) => {
+        if (b.posts === a.posts) {
+            return b.likes - a.likes;
+        }
+        return b.posts - a.posts;
+    });
+
+    const popularityMap = new Map();
+    popularAuthors.slice(0, 3).forEach((author, index) => {
+        popularityMap.set(author.fullName, index + 1);
+    });
+
+    try{
+        for (const author of authors) {
+            const rank = popularityMap.get(author.fullName) || 0;
+            const authorElement = await loadAuthor(author, rank);
+            authorContainer.appendChild(authorElement);
+        }
+    } catch (error) {
+        alert("Ошибка при загрузке авторов: " + error.message);
+    }
+
 }

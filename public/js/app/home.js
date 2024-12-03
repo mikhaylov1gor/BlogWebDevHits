@@ -41,8 +41,9 @@ export async function loadPost(post){
     const isLong = post.description.length > maxLength;
     let postDescription = isLong ? post.description.substring(0, maxLength) : post.description;
     const lastPoint = postDescription.lastIndexOf(".")
-    postDescription = postDescription.substring(0, lastPoint + 1);
-
+    if(isLong) {
+        postDescription = postDescription.substring(0, lastPoint + 1);
+    }
     postElement.querySelector("#post-text").textContent = `${postDescription}`;
     postElement.querySelector("#tags").textContent = post.tags.map(tag => `#${tag.name}`).join(' ');
     postElement.querySelector("#readingTime").textContent = `Время чтения: ${post.readingTime} мин`;
@@ -114,12 +115,18 @@ export async function loadPost(post){
 }
 
 
-export async function initializeHomePage() {
+export async function initializeHomePage(authorName) {
     const form = document.querySelector("main");
 
     if (!form) {
         return;
     }
+
+    const postsContainer = document.getElementById('posts');
+    postsContainer.style.display = "none";
+    postsContainer.innerHTML = '';
+
+
     // onlyMine checkbox
     if (!localStorage.getItem("authToken")) {
         document.getElementById("checkbox_onlyMine").style.display = "none";
@@ -139,6 +146,7 @@ export async function initializeHomePage() {
 
     document.addEventListener("submit", (event) => {
         event.preventDefault();
+        postsContainer.innerHTML = '';
 
         const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
         const author = document.getElementById("author").value;
@@ -151,10 +159,7 @@ export async function initializeHomePage() {
         document.getElementById("pagination").style.display = "flex";
 
         const loading = document.getElementById("loading");
-        const postsContainer = document.getElementById('posts');
         loading.style.display = "block";
-        postsContainer.style.display = "none";
-        postsContainer.innerHTML = '';
         getPosts(tags, author, min, max, sorting, onlyMyCommunities, page, size)
             .then(async data => {
                 for (const post of data.posts) {
@@ -163,7 +168,7 @@ export async function initializeHomePage() {
                 }
             })
             .catch(error => {
-                console.error("ошибка при загрузке постов", error)
+                alert("Ошибка при загрузке постов: " + error.message);
             })
             .finally(()=>{
                 postsContainer.style.display = "block";

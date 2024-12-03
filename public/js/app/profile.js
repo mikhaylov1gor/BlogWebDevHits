@@ -1,4 +1,5 @@
 import {editProfileApi, getProfileApi} from "../api/users.js";
+import {validation} from "./app.js";
 
 export async function initializeProfilePage() {
     const authForm = document.getElementById("auth-form");
@@ -20,16 +21,21 @@ export async function initializeProfilePage() {
     }
 
     document.getElementById("save").addEventListener("click", async () => {
+
+        const email = authForm.querySelector("#email").value;
+        const name = authForm.querySelector("#name").value;
+        const birthDate = authForm.querySelector("#birthDate").value;
+        const gender = authForm.querySelector("#gender").value === "Мужчина" ? "Male" : "Female";
+        const phone = authForm.querySelector("#phone").value;
+
+        if (!validation(phone,"phone")){
+            alert("некорректный номер телефона");
+            return;
+        }
         try {
-            const email = authForm.querySelector("#email").value;
-            const name = authForm.querySelector("#name").value;
-            const birthDate = authForm.querySelector("#birthDate").value;
-            const gender = authForm.querySelector("#gender").value === "Мужчина" ? "Male" : "Female";
-            const phone = authForm.querySelector("#phone").value;
-            console.log(email, " ", name, " ", birthDate, " ", gender, " ", phone);
             await editProfileApi(email, name, birthDate, gender, phone)
         } catch (error) {
-            console.error("Ошибка при сохранении данных профиля:", error.message);
+            alert("Ошибка при изменении данных пользователя: " + error.message);
         }
     });
 

@@ -1,6 +1,7 @@
 const API_URL = "https://blog.kreosoft.space/api"
 
 export async function registerApi(fullName,password,email,birthDate,gender,phoneNumber){
+    console.log(JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber}));
     try {
         const response = await fetch (`${API_URL}/account/register`,{
 
@@ -11,7 +12,7 @@ export async function registerApi(fullName,password,email,birthDate,gender,phone
             body: JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber})
         });
 
-        console.log(JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber}))
+
         if (!response.ok){
             const errorData = await response.json();
             throw new Error(errorData.message || "Registration failed")
@@ -22,7 +23,7 @@ export async function registerApi(fullName,password,email,birthDate,gender,phone
         window.location.href="/";
 
     } catch(error){
-        console.error("Login failed", error.message);
+        console.error("Registration failed", error.message);
         throw error;
     }
 }
@@ -132,7 +133,7 @@ export async function editProfileApi(email,fullName,birthDate,gender,phoneNumber
             throw new Error(errorData.message || "EditProfile failed")
         }
 
-        return await response.text();
+        window.location.href="/";
 
     } catch (error){
         console.error("error", error.message);

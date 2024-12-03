@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  background-color: #f8f9fa;
 
   main {
     padding: 0;
@@ -177,12 +178,14 @@ body {
           display: block;
           margin: 0 auto;
         }
+
         p {
           line-height: 1.5;
-          font-size: 14x;
+          font-size: 14px;
 
-          a{
+          a {
             color: #007bff;
+
             &:hover {
               text-decoration: underline;
             }
@@ -198,6 +201,13 @@ body {
             color: #333;
             font-size: 12px;
           }
+
+          .small-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            vertical-align: middle;
+          }
         }
 
         .post-footer {
@@ -206,7 +216,7 @@ body {
           align-items: center;
           margin-top: 10px;
 
-          #comment-button, #like-button{
+          #comment-button, #like-button {
             background-color: #f8f9fa;
             border: 1px solid #ddd;
             padding: 5px 10px;
@@ -220,7 +230,7 @@ body {
             transition: background-color 0.3s ease;
 
 
-            .small-icon{
+            .small-icon {
               width: 16px;
               height: 16px;
               margin-right: 5px;
@@ -237,7 +247,152 @@ body {
             }
           }
         }
+      }
+    }
 
+    #comments-container {
+      border-top: 1px solid #ddd;
+      flex: 1;
+
+      #comments {
+        background-color: #fff;
+        margin: auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        width: 50%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        header {
+          margin-bottom: 10px;
+
+          h3 {
+            color: #6c757d;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+          }
+        }
+
+        .comment {
+          border-bottom: 1px solid #eee;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+
+
+          .row{
+            display: flex;
+            gap: 5px;
+
+            #edit-button-submit{
+              background-color: #fff200;
+              border: 1px solid #ddd;
+              padding: 5px 10px;
+              border-radius: 4px;
+              font-size: 14px;
+              color: #333;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              transition: background-color 0.3s ease;
+            }
+
+            #reply-button-submit{
+              background-color: #007bff;
+              color: #fff;
+              border: 1px solid #ddd;
+              padding: 5px 10px;
+              border-radius: 4px;
+              font-size: 14px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              transition: background-color 0.3s ease;
+            }
+          }
+          .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 5px;
+
+            strong {
+              font-size: 14px;
+              color: #333;
+              display: block;
+            }
+
+            #delete-button, #edit-button {
+              border: none;
+              background: transparent;
+              cursor: pointer;
+              font-size: 16px;
+              padding: 0;
+            }
+          }
+          p {
+            margin: 5px 0;
+            line-height: 1.5;
+          }
+
+          small {
+            font-size: 12px;
+            color: #999;
+          }
+          a {
+            color: #007bff;
+            font-size: 12px;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          .toggle-replies {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #007bff;
+            cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        #new-comment {
+          margin-top: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          textarea {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+          }
+
+          button {
+            align-self: flex-end;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #0056b3;
+            }
+          }
+        }
       }
     }
 

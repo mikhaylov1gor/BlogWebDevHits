@@ -74,6 +74,6 @@ export async function initializeCommunitiesPage(){
             container.appendChild(communityElement);
         }
     } catch (error){
-            console.error("ошибка при загрузке сообществ", error)
+        alert("Ошибка при загрузке сообществ: " + error.message);
     }
 }
