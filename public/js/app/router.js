@@ -86,7 +86,7 @@ export const rendering = async (value) => {
         const postId = matchPost[1];
         await loadHeader();
         app.innerHTML = await loadTemplate("/templates/postPage.html");
-        await initializePostPage(postId);
+        await initializePostPage(postId, value);
         return;
     }
 

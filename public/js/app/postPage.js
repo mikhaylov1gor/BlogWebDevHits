@@ -118,7 +118,7 @@ async function loadComment(postData, comment,myId) {
     return commentElement;
 }
 
-export async function initializePostPage(postId) {
+export async function initializePostPage(postId, value) {
     const main = document.querySelector("main");
     if (!main) {
         return;
@@ -153,6 +153,15 @@ export async function initializePostPage(postId) {
         }
     } catch (error) {
         alert("Ошибка при загрузке комментариев: " + error.message);
+    }
+
+    console.log(value);
+    if (value){
+        const scrollToContainer = document.querySelector("#comments-container")
+        scrollToContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
     }
 
     document.getElementById("new-comment").addEventListener("submit", async (event) => {

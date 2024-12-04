@@ -55,12 +55,12 @@ export async function loadPost(post){
     // обработчики событий
     postElement.querySelector("#title").addEventListener("click", (e)=> {
         e.preventDefault();
-        navigateTo(`/post/${post.id}`);
+        navigateTo(`/post/${post.id}`, false);
     });
 
     postElement.querySelector("#comment-button").addEventListener("click", (e)=> {
         e.preventDefault();
-        navigateTo(`/post/${post.id}`);
+        navigateTo(`/post/${post.id}`, true);
     });
 
     const likeButton = postElement.querySelector("#like-button");
