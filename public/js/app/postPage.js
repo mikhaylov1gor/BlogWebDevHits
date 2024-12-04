@@ -11,7 +11,6 @@ async function loadComment(postData, comment,myId) {
         throw new Error("Не удалось загрузить шаблон комментария");
     }
 
-    console.log(comment);
     const commentElement = document.createElement('div');
     commentElement.innerHTML = await response.text();
 

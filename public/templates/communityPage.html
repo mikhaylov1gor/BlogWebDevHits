@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/community.css">
     <script src="../js/app/communityPage.js" type="module" defer></script>
 </head>
 <body>
@@ -12,22 +12,24 @@
         <form id="group-form">
             <header>
                 <div class="filter-row">
-                <h1 id ="group-name"></h1>
-                    <button id="create-post-button"></button>
-                    <button id="subscribe-button"></button>
+                    <h1 id="group-name">Группа "Название"</h1>
+                    <div class="actions">
+                        <button id="create-post-button" style="display: none;">Написать пост</button>
+                        <button id="subscribe-action-button" class="unsubscribe" style="display: none"></button>
+                    </div>
                 </div>
             </header>
             <div class="filter-row">
-                <h2 id="subs-count"></h2>
+                <h2 id="subs-count">27 подписчиков</h2>
             </div>
             <div class="filter-row">
-                <h3 id="community-type"></h3>
+                <h3 id="community-type">Тип сообщества: закрытое</h3>
             </div>
             <header>
-                <h1>Авторы</h1>
+                <h1>Администраторы</h1>
             </header>
             <div id="authors">
-                <!-- тут будут атворы !-->
+                <!-- Здесь будут администраторы -->
             </div>
         </form>
     </section>

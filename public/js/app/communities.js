@@ -1,7 +1,7 @@
 import {getCommunities, getMyCommunities, subscribe, unSubscribe} from "../api/community.js";
 import {navigateTo} from "./router.js";
 
-function toggle(button, isSubscribed) {
+export function toggle(button, isSubscribed) {
     if (isSubscribed) {
         button.classList.add("unsubscribe-button");
         button.classList.remove("subscribe-button");
@@ -37,7 +37,7 @@ async function loadCommunity(community, myCommunities) {
         communityElement.querySelector("button").style.display = "none";
     }
 
-    if (community.isClosed){
+    if (community.isClosed && !isMyCommunity){
         communityElement.style.display = "none";
     }
 

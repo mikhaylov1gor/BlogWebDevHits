@@ -126,6 +126,9 @@ export async function initializeHomePage(authorName) {
     postsContainer.style.display = "none";
     postsContainer.innerHTML = '';
 
+    if (authorName){
+        document.getElementById("author").value = authorName;
+    }
 
     // onlyMine checkbox
     if (!localStorage.getItem("authToken")) {

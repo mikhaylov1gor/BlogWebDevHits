@@ -1,6 +1,7 @@
 import {loadGroups, loadTags} from "./app.js";
 import {getAddress} from "../api/adress.js";
 import {createPost} from "../api/post.js";
+import {createPostToCommunity} from "../api/community.js";
 
 let address = null;
 async function loadAddress(){
@@ -154,7 +155,7 @@ async function loadAddress(){
     });
 }
 
-export async function initializeCreatePostPage(){
+export async function initializeCreatePostPage(communityId) {
     const form = document.querySelector("main")
 
     if (!form) {
@@ -174,6 +175,7 @@ export async function initializeCreatePostPage(){
 
     createButton.addEventListener("click", async () => {
 
+        const group = document.getElementById("group").value;
         const title = document.getElementById("name").value;
         const description = document.getElementById("text").value;
         const readingTime = document.getElementById("time-reading").value;
@@ -181,7 +183,11 @@ export async function initializeCreatePostPage(){
         const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
 
         try {
-            await createPost(title, description, readingTime, image, address, tags)
+            if (group) {
+                await createPostToCommunity(group, title, description, readingTime, image, address, tags);
+            } else {
+                await createPost(title, description, readingTime, image, address, tags)
+            }
         } catch (error) {
             alert("Ошибка создания поста: " + error.message);
         }

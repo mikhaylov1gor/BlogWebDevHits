@@ -31,7 +31,7 @@ export const loadTemplate = async (path) => {
     }
 };
 
-export async function switchRouting(path) {
+export async function switchRouting(path, value) {
     const communityPageRegex = /^\/communities\/([a-fA-F0-9-]+)$/;
 
     if (communityPageRegex.test(path)) {
@@ -42,7 +42,7 @@ export async function switchRouting(path) {
 
     switch (path) {
         case "/":
-            await initializeHomePage();
+            await initializeHomePage(value);
             break;
         case "/login":
             initializeLoginPage();
@@ -60,12 +60,12 @@ export async function switchRouting(path) {
             await initializeCommunitiesPage();
             break;
         case "/post/create":
-            await initializeCreatePostPage();
+            await initializeCreatePostPage(value);
             break;
     }
 }
 
-export const rendering = async () => {
+export const rendering = async (value) => {
     const app = document.getElementById("app");
 
     // переход на страницу сообщества или поста
@@ -98,11 +98,11 @@ export const rendering = async () => {
     await loadHeader();
     app.innerHTML = await loadTemplate(route);
 
-    await switchRouting(window.location.pathname);
+    await switchRouting(window.location.pathname, value);
 };
-export function navigateTo(path) {
+export function navigateTo(path, value) {
     history.pushState(null, null, path);
-    rendering();
+    rendering(value);
 }
 
 document.addEventListener("click", (e) => {

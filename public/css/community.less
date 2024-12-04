@@ -1,0 +1,306 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  background-color: #f8f9fa;
+
+  main {
+    padding: 0;
+
+    #group {
+      header {
+        margin-bottom: 20px;
+
+        .filter-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+
+        h1, h2, h3 {
+          margin: 0;
+        }
+      }
+    }
+
+    #authors {
+      .author {
+        display: flex;
+        align-items: center;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+
+        .info {
+          .name {
+            font-weight: bold;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    #filters, #group {
+      background-color: #fff;
+      margin: auto;
+      padding: 10px;
+      border: 1px solid #888;
+      width: 50%;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+      h2 {
+        font-size: 15px;
+        margin-bottom: 0px;
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        #authors {
+          border-top: 1px solid #ddd;
+          flex: 1;
+
+          .author {
+            background-color: #fff;
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+
+            .avatar {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-size: cover;
+              background-position: center;
+
+              &.Male {
+                background-image: url('../icons/man.png');
+              }
+
+              &.Female {
+                background-image: url('../icons/woman.png');
+              }
+            }
+          }
+        }
+
+        .filter-row {
+          display: flex;
+          gap: 5px;
+
+
+          #tags {
+            width: 100%;
+            height: 60px;
+            overflow-y: auto;
+          }
+
+          input[type="text"],
+          select,
+          input[type="date"] {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 14px;
+          }
+
+          label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            input[type="checkbox"] {
+              margin: 0;
+            }
+          }
+
+          .subscribe-button, #confirm-button, #create-post-button{
+            border-radius: 8px;
+            background-color: blue;
+          }
+
+          .unsubscribe-button{
+            border-radius: 8px;
+            background-color:red;
+          }
+        }
+      }
+    }
+
+    #posts {
+      border-top: 1px solid #ddd;
+      flex: 1;
+
+      .post {
+        background-color: #fff;
+        margin: 20px auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        width: 50%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        header {
+          background: #ffffff;
+          color: #333;
+          box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+          h3 {
+            color: #6c757d;
+            margin: 0 0 5px 0;
+            font-size: 12px;
+            line-height: 1.4;
+          }
+
+          h1 {
+            font-size: 16px;
+            margin: 0 0 10px 0;
+            font-weight: bold;
+          }
+        }
+
+        .post-image {
+          width: 50%;
+          height: auto;
+          display: block;
+          margin: 0 auto;
+        }
+
+        p {
+          line-height: 1.5;
+          font-size: 14px;
+
+          a {
+            color: #007bff;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        #small-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          small {
+            color: #333;
+            font-size: 12px;
+          }
+
+          .small-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            vertical-align: middle;
+          }
+        }
+
+        .post-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+
+          #comment-button, #like-button {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s ease;
+
+
+            .small-icon {
+              width: 16px;
+              height: 16px;
+              margin-right: 5px;
+              vertical-align: middle;
+            }
+
+            &:hover {
+              background-color: #e9ecef;
+            }
+
+            span {
+              font-size: 12px;
+              color: #6c757d;
+            }
+          }
+        }
+      }
+    }
+
+    #pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+
+      .pagination {
+        display: inline-block;
+
+        a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+          border: 1px solid #ddd;
+
+          &.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+          }
+
+          &:hover:not(.active) {
+            background-color: #ddd;
+          }
+        }
+      }
+      .page-size label {
+        margin-right: 8px;
+        font-size: 14px;
+      }
+
+      .page-size select {
+        padding: 5px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-top: 1px solid #ddd;
+
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
+  }
+}
+

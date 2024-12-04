@@ -1,4 +1,6 @@
 import{getAuthors} from "../api/author.js";
+import {navigateTo} from "./router.js";
+import {initializeHomePage} from "./home.js";
 
 export async function loadAuthor(author, rank) {
     const response = await fetch("/templates/author.html");
@@ -22,13 +24,20 @@ export async function loadAuthor(author, rank) {
             break;
     }
 
-
     authorElement.querySelector("#avatar").classList.add(author.gender);
     authorElement.querySelector("#name").textContent = `${author.fullName}` || "Anonymous";
     authorElement.querySelector("#create").textContent = `Создан: ${new Date(author.created).toLocaleDateString("ru-RU")}`;
     authorElement.querySelector("#birthData").textContent = `Дата рождения: ${new Date(author.birthDate).toLocaleDateString("ru-RU")}`
     authorElement.querySelector("#posts").textContent = `Постов ${author.posts || 0}`;
     authorElement.querySelector("#likes").textContent = `Лайков ${author.likes || 0}`;
+
+    authorElement.addEventListener("click", () => {
+        try {
+            navigateTo("/", author.fullName);
+        } catch (error){
+            alert("не удалось загрузить посты автора: " + error.message);
+        }
+    });
 
     return authorElement;
 }

@@ -1,6 +1,9 @@
-import {getCommunity, getCommunityPosts} from "../api/community.js";
+import {getCommunity, getCommunityPosts, getMyCommunities, subscribe, unSubscribe} from "../api/community.js";
 import {loadTags} from "./app.js";
 import{loadPost} from "./home.js";
+import {getProfileApi} from "../api/users.js";
+import {toggle} from "./communities.js";
+import {navigateTo} from "./router.js";
 
 function loadAuthors(authors) {
     const container = document.getElementById("authors");
@@ -35,11 +38,58 @@ export async function initializeCommunityPage(communityId) {
     document.querySelector("#group-name").textContent = `Группа ${communityData.name}`;
     document.querySelector("#subs-count").textContent = `${communityData.subscribersCount} подписчиков`;
     document.querySelector("#community-type").textContent = `тип сообщества: ${communityData.isClosed === true ? "закрытое" : "открытое"}`;
-
     await loadTags();
 
     const authors = communityData.administrators;
     loadAuthors(authors);
+
+    const token = localStorage.getItem("authToken");
+    if (token) {
+        const profile = await getProfileApi();
+        const myId = profile.id;
+        // отписаться-подписаться
+        if (!communityData.isClosed) {
+            document.querySelector("#subscribe-action-button").style.display = "inline";
+
+            const myComms = await getMyCommunities();
+            if (myComms.some(community => community.userId === myId && communityId === community.communityId)) {
+                document.querySelector("#subscribe-action-button").textContent = "Отписаться";
+                document.querySelector("#subscribe-action-button").classList.add("unsubscribe-button");
+            } else {
+                document.querySelector("#subscribe-action-button").textContent = "Подписаться";
+                document.querySelector("#subscribe-action-button").classList.add("subscribe-button");
+            }
+        }
+
+        // написать пост
+        if (communityData.administrators.some(admin => admin.id === myId)) {
+            document.querySelector("#create-post-button").style.display = "inline";
+            document.querySelector("#subscribe-action-button").style.display = "none";
+        }
+    }
+
+    const subActionButton = document.querySelector("#subscribe-action-button");
+    subActionButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        if (subActionButton.classList.contains("subscribe-button")) {
+            await subscribe(communityId);
+            toggle(subActionButton, true);
+        } else if (subActionButton.classList.contains("unsubscribe-button")) {
+            await unSubscribe(communityId)
+            toggle(subActionButton, false);
+        }
+    })
+
+    const createPostButton = document.querySelector("#create-post-button");
+    createPostButton.addEventListener("click", async (event)=>{
+        event.preventDefault();
+        try {
+            navigateTo("/", communityId);
+        } catch (error){
+            alert("не удалось загрузить посты автора: " + error.message);
+        }
+    })
+
 
     document.addEventListener("submit", (event) => {
         event.preventDefault();

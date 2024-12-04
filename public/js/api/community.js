@@ -64,7 +64,7 @@ export async function getCommunity(id){
         return await response.json()
 
     } catch(error){
-        console.error("Subscribe failed", error.message);
+        console.error("get concrete community failed", error.message);
         throw error;
     }
 }
@@ -98,6 +98,40 @@ export async function getCommunityPosts(id,tags,sorting,page,size){
 
     } catch(error){
         console.error("Subscribe failed", error.message);
+        throw error;
+    }
+}
+
+export async function createPostToCommunity(id, title, description, readingTime, image, addressId, tags) {
+    const token = localStorage.getItem("authToken");
+
+    if (!token){
+        throw new Error("Unauthorized");
+    }
+
+    try {
+        const params = new URLSearchParams({
+            id: id,
+        })
+
+        const response = await fetch(`${API_URL}/community/${id}/post?${params}`, {
+            method: "POST",
+            headers:{
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({title, description, readingTime, image, addressId, tags})
+        });
+
+        if(!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || "create post failed")
+        }
+
+        window.location.href="/";
+
+    } catch (error){
+        console.error("create post failed", error.message);
         throw error;
     }
 }

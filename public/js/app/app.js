@@ -31,8 +31,10 @@ export async function loadGroups(){
     try{
         const groups = await getMyCommunities();
 
-        console.log(groups);
-
+        const option = document.createElement("option");
+        option.value = null;
+        option.textContent = "Без группы";
+        groupsSelect.appendChild(option);
 
         for (const group of groups) {
             if(group.role === "Administrator") {
