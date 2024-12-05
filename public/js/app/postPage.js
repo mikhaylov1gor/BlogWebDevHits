@@ -48,9 +48,14 @@ async function loadComment(postData, comment,myId, value) {
     const deleteButton = commentElement.querySelector("#delete-button");
     const editButton = commentElement.querySelector("#edit-button");
 
+
     if (comment.authorId === myId && !comment.deleteDate){
         deleteButton.style.display = "block";
         editButton.style.display = "block";
+    }
+
+    if (!myId){
+        commentElement.querySelector("#reply").style.display = "none";
     }
 
     deleteButton.addEventListener("click", async (event) => {
