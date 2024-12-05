@@ -105,11 +105,4 @@ export function navigateTo(path, value) {
     rendering(value);
 }
 
-document.addEventListener("click", (e) => {
-    if (e.target.matches("[data-link]")) {
-        e.preventDefault();
-        navigateTo(e.target.href);
-    }
-});
-
-window.onpopstate = () => rendering();
+window.addEventListener("popstate", () => rendering());

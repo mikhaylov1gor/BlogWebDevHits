@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="filter-row">
-                <div class="input-group" style="width: 30%;">
+                <div class="input-group" style="width: 20%;">
                     <label for="sorting">Сортировать</label>
                     <select id="sorting" name="sorting">
                         <option value="CreateDesc">По дате создания (сначала новые)</option>
@@ -48,11 +48,11 @@
                     <input id="max_reading" type="number" name="end_date">
                 </div>
 
-                <div class="input-group" id="checkbox_onlyMine" style="width: 15%;">
+                <div class="input-group" id="checkbox_onlyMine" style="width: 20%;">
                     <label for="only_mine">Только мои группы</label>
                     <input id="only_mine" type="checkbox" name="only_mine">
                 </div>
-                <button id="confirm-button" type="submit" style="margin-left: auto">Применить</button>
+                <button id="confirm-button" type="submit" style="margin-left: auto; width: 20%">Применить</button>
             </div>
         </form>
     </section>
@@ -75,26 +75,7 @@
     </section>
 
     <div id="pagination" style="display: none;">
-        <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">&raquo;</a>
-        </div>
-        <div class="page-size">
-            <label for="pageSize">Размер страницы:</label>
-            <select id="pageSize">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="1000">1000</option>
-            </select>
-        </div>
+
     </div>
 
 </main>

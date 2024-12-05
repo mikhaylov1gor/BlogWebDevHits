@@ -33,12 +33,8 @@ async function loadCommunity(community, myCommunities) {
     });
 
     const isMyCommunity = myCommunities.some(myCommunity => myCommunity.communityId === community.id && myCommunity.role === "Administrator")
-    if (isMyCommunity) {
+    if (isMyCommunity || community.isClosed) {
         communityElement.querySelector("button").style.display = "none";
-    }
-
-    if (community.isClosed && !isMyCommunity){
-        communityElement.style.display = "none";
     }
 
     const button = communityElement.querySelector("button");

@@ -1,10 +1,12 @@
 import {getCommunity, getCommunityPosts, getMyCommunities, subscribe, unSubscribe} from "../api/community.js";
-import {loadTags} from "./app.js";
+import {getURLParams, loadTags, updateURLParams} from "./app.js";
 import{loadPost} from "./home.js";
 import {getProfileApi} from "../api/users.js";
 import {toggle} from "./communities.js";
 import {navigateTo} from "./router.js";
+import {initializePagination} from "./pagination.js";
 
+let canWatch = false;
 function loadAuthors(authors) {
     const container = document.getElementById("authors");
     try {
@@ -34,6 +36,13 @@ export async function initializeCommunityPage(communityId) {
         return;
     }
 
+    const response = await fetch("/templates/pagination.html");
+    if (!response.ok) {
+        throw new Error("Не удалось загрузить шаблон пагинации");
+    }
+    const paginationElement = document.querySelector('#pagination');
+    paginationElement.innerHTML = await response.text()
+
     const communityData = await getCommunity(communityId);
     document.querySelector("#group-name").textContent = `Группа ${communityData.name}`;
     document.querySelector("#subs-count").textContent = `${communityData.subscribersCount} подписчиков`;
@@ -50,6 +59,8 @@ export async function initializeCommunityPage(communityId) {
         // отписаться-подписаться
         if (!communityData.isClosed) {
             document.querySelector("#subscribe-action-button").style.display = "inline";
+            canWatch = true;
+            document.querySelector("#filters").style.display ="block";
 
             const myComms = await getMyCommunities();
             if (myComms.some(community => community.userId === myId && communityId === community.communityId)) {
@@ -65,6 +76,8 @@ export async function initializeCommunityPage(communityId) {
         if (communityData.administrators.some(admin => admin.id === myId)) {
             document.querySelector("#create-post-button").style.display = "inline";
             document.querySelector("#subscribe-action-button").style.display = "none";
+            document.querySelector("#filters").style.display ="block";
+            canWatch = true;
         }
     }
 
@@ -84,21 +97,50 @@ export async function initializeCommunityPage(communityId) {
     createPostButton.addEventListener("click", async (event)=>{
         event.preventDefault();
         try {
-            navigateTo("/", communityId);
+            navigateTo("/post/create", communityId);
         } catch (error){
-            alert("не удалось загрузить посты автора: " + error.message);
+            alert("не удалось загрузить страницу создания поста: " + error.message);
         }
     })
 
 
-    document.addEventListener("submit", (event) => {
+    // загрузка параметров
+    let urlParams = getURLParams();
+
+    if (urlParams.sorting) {
+        document.getElementById("sorting").value = urlParams.sorting;
+    }
+
+    if (urlParams.tags) {
+        const tags = urlParams.tags.split(",");
+        const tagElements = document.getElementById("tags").options;
+        for (let i = 0; i < tagElements.length; i++) {
+            if (tags.includes(tagElements[i].value)) {
+                tagElements[i].selected = true;
+            }
+        }
+    }
+
+    if (urlParams.page) {
+        document.getElementById("pageSize").value = urlParams.page;
+    }
+
+
+    document.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
         const sorting = document.getElementById("sorting").value;
-        const page = 1;
-        const size = document.getElementById("pageSize").value;
-        document.getElementById("pagination").style.display = "flex";
+
+        urlParams = getURLParams();
+        const page = urlParams.page ? urlParams.page : 1;
+        const size = urlParams.size ? urlParams.size : 5;
+
+        updateURLParams("tags", tags)
+        updateURLParams("sorting", sorting);
+        updateURLParams("page", page);
+        updateURLParams("size", size);
+
 
         const loading = document.getElementById("loading");
         const postsContainer = document.getElementById('posts');
@@ -106,19 +148,23 @@ export async function initializeCommunityPage(communityId) {
         postsContainer.style.display = "none";
         postsContainer.innerHTML = '';
 
-        getCommunityPosts(communityId,tags,sorting,page,size)
-            .then(async data => {
-                for (const post of data.posts) {
-                    const postElement = await loadPost(post);
-                    postsContainer.appendChild(postElement);
-                }
-            })
-            .catch(error => {
-                alert("Ошибка при загрузке страницы сообщества: " + error.message);
-            })
-            .finally(()=>{
-                postsContainer.style.display = "block";
-                loading.style.display = "none";
-            })
+        try {
+            const data = await getCommunityPosts(communityId, tags, sorting, page, size)
+            await initializePagination(data.pagination.size, data.pagination.count, data.pagination.current);
+            for (const post of data.posts) {
+                const postElement = await loadPost(post);
+                postsContainer.appendChild(postElement);
+            }
+        } catch (error){
+            alert("Ошибка при загрузке страницы сообщества: " + error.message);
+        } finally {
+            postsContainer.style.display = "block";
+            loading.style.display = "none";
+            document.getElementById("pagination").style.display = "flex";
+        }
     });
+
+    if (canWatch) {
+        document.dispatchEvent(new Event('submit'));
+    }
 }

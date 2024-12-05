@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  background-color: #f8f9fa;
+
+  main {
+    padding: 0;
+
+    #pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+
+      .pagination {
+        display: inline-block;
+
+        a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+
+          &.active {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #0056b3;
+          }
+
+          &:hover:not(.active) {
+            background-color: #ddd;
+          }
+        }
+      }
+      .page-size label {
+        margin-right: 8px;
+        font-size: 14px;
+      }
+
+      .page-size select {
+        padding: 5px;
+        font-size: 14px;
+      }
+    }
+
+  }
+}

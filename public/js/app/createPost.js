@@ -1,24 +1,37 @@
-import {loadGroups, loadTags} from "./app.js";
+import {getURLParams, loadGroups, loadTags, updateURLParams} from "./app.js";
 import {getAddress} from "../api/adress.js";
 import {createPost} from "../api/post.js";
 import {createPostToCommunity} from "../api/community.js";
 
-let address = null;
-async function loadAddress(){
-    const subjectSelect = document.getElementById("subject");
-    const citySelect = document.getElementById("city");
-    const streetSelect = document.getElementById("street");
-    const buildingSelect = document.getElementById("building");
-    subjectSelect.innerHTML = "";
+let addressId = null;
 
-    try{
-        const  subjects = await getAddress();
+async function loadAddress(address) {
+    const addressForm = document.getElementById("address-field");
+
+    const response = await fetch("/templates/address.html");
+    if (!response.ok) {
+        console.error(`Ошибка загрузки шаблона: ${response.statusText}`);
+        throw new Error("Не удалось загрузить шаблон комментария");
+    }
+
+    const addressElement = document.createElement('div');
+    addressElement.innerHTML = await response.text();
+
+    const subjects = await getAddress(address);
+
+    if (subjects.length === 0){
+        return;
+    }
+
+    const selector = addressElement.querySelector("#subject");
+
+    try {
         const defaultSubject = document.createElement("option");
         defaultSubject.value = "";
         defaultSubject.textContent = "";
         defaultSubject.setAttribute("guid", null)
-        defaultSubject.setAttribute("objectLevel", null)
-        subjectSelect.appendChild(defaultSubject);
+        defaultSubject.setAttribute("objectLevel", "")
+        selector.appendChild(defaultSubject);
 
         for (const subject of subjects) {
             const option = document.createElement("option");
@@ -26,133 +39,44 @@ async function loadAddress(){
             option.textContent = subject.text;
             option.setAttribute("guid", subject.objectGuid)
             option.setAttribute("objectLevel", subject.objectLevelText)
-            subjectSelect.appendChild(option);
+            selector.appendChild(option);
         }
     } catch (error) {
         console.error("ошибка загрузки адреса:", error.message);
     }
 
-    subjectSelect.addEventListener("change", async (event) => {
-        const selected = event.target.value;
-        citySelect.innerHTML = "";
-        streetSelect.innerHTML = "";
-        buildingSelect.innerHTML = "";
+    addressForm.appendChild(addressElement);
 
-        const selectedOption = event.target.selectedOptions[0];
-        address = selectedOption.getAttribute("guid");
+    addressElement.addEventListener("change", (event) =>{
+        event.preventDefault();
 
-        if (selected) {
-            document.querySelector("#selectCity").style.display = "block";
-        } else {
-            document.querySelector("#selectCity").style.display = "none";
-            document.querySelector("#selectStreet").style.display = "none";
-            document.querySelector("#selectBuilding").style.display = "none";
-            return;
+        const selectedOption = selector.options[selector.selectedIndex];
+
+        if (selectedOption.textContent !== "") {
+            addressId = selectedOption.getAttribute("guid");
+        }
+        else {
+            const previousElement = addressElement.previousSibling;
+            if (previousElement){
+                const previousSelector = previousElement.querySelector("#subject");
+                const previousSelectedOption =
+                    previousSelector.options[previousSelector.selectedIndex];
+                addressId = previousSelectedOption.getAttribute("guid");
+            } else{
+                addressId = null;
+            }
         }
 
-        try {
-            const cities = await getAddress(selected);
+        while (addressElement.nextSibling) {
+            addressForm.removeChild(addressElement.nextSibling);
+        }
 
-            const defaultCity = document.createElement("option");
-            defaultCity.value = "";
-            defaultCity.textContent = "";
-            defaultCity.setAttribute("guid", null)
-            defaultCity.setAttribute("objectLevel", null)
-            citySelect.appendChild(defaultCity);
+        addressElement.querySelector("label").textContent = selectedOption.getAttribute("objectLevel")
 
-            for (const city of cities) {
-                const option = document.createElement("option");
-                option.value = city.objectId;
-                option.textContent = city.text;
-                option.setAttribute("guid", city.objectGuid)
-                option.setAttribute("objectLevel", city.objectLevelText)
-                citySelect.appendChild(option);
-            }
-        } catch (error) {
-            console.error("ошибка загрузки адреса:", error.message);
+        if (selectedOption.value) {
+            loadAddress(selectedOption.value);
         }
     })
-
-    citySelect.addEventListener("change", async (event) => {
-        const selected = event.target.value;
-        streetSelect.innerHTML = "";
-        buildingSelect.innerHTML = "";
-
-        const selectedOption = event.target.selectedOptions[0];
-        address = selectedOption.getAttribute("guid");
-
-        if (selected) {
-            document.querySelector("#selectStreet").style.display = "block";
-        } else {
-            document.querySelector("#selectStreet").style.display = "none";
-            document.querySelector("#selectBuilding").style.display = "none";
-            return;
-        }
-
-        try {
-            const streets = await getAddress(selected);
-
-            const defaultStreet = document.createElement("option");
-            defaultStreet.value = "";
-            defaultStreet.textContent = "";
-            defaultStreet.setAttribute("guid", null)
-            defaultStreet.setAttribute("objectLevel", null)
-            streetSelect.appendChild(defaultStreet);
-
-            for (const street of streets) {
-                const option = document.createElement("option");
-                option.value = street.objectId;
-                option.textContent = street.text;
-                option.setAttribute("guid", street.objectGuid)
-                option.setAttribute("objectLevel", street.objectLevelText)
-                streetSelect.appendChild(option);
-            }
-        } catch (error) {
-            console.error("ошибка загрузки адреса:", error.message);
-        }
-    })
-
-    streetSelect.addEventListener("change", async (event) => {
-        const selected = event.target.value;
-        buildingSelect.innerHTML = "";
-
-        const selectedOption = event.target.selectedOptions[0];
-        address = selectedOption.getAttribute("guid");
-
-        if (selected) {
-            document.querySelector("#selectBuilding").style.display = "block";
-        } else {
-            document.querySelector("#selectBuilding").style.display = "none";
-            return;
-        }
-
-        try {
-            const buildings = await getAddress(selected);
-            console.log(buildings)
-            const defaultBuilding = document.createElement("option");
-            defaultBuilding.value = "";
-            defaultBuilding.textContent = "";
-            defaultBuilding.setAttribute("guid", null)
-            defaultBuilding.setAttribute("objectLevel", null)
-            buildingSelect.appendChild(defaultBuilding);
-
-            for (const building of buildings) {
-                const option = document.createElement("option");
-                option.value = building.objectId;
-                option.textContent = building.text;
-                option.setAttribute("guid", building.objectGuid)
-                option.setAttribute("objectLevel", building.objectLevelText)
-                buildingSelect.appendChild(option);
-            }
-        } catch (error) {
-            console.error("ошибка загрузки адреса:", error.message);
-        }
-    })
-
-    buildingSelect.addEventListener("change", (event) => {
-        const selectedOption = event.target.selectedOptions[0];
-        address = selectedOption.getAttribute("guid");
-    });
 }
 
 export async function initializeCreatePostPage(communityId) {
@@ -168,8 +92,45 @@ export async function initializeCreatePostPage(communityId) {
     // загрузка групп
     await loadGroups();
 
+    // загрузка параметров
+    if (communityId){
+        updateURLParams("group", communityId);
+    }
+
+    const urlParams = getURLParams();
+
+    if (urlParams.group) {
+        document.getElementById("group").value = urlParams.group;
+    }
+
+    if (urlParams.title) {
+        document.getElementById("name").value = urlParams.title;
+    }
+
+    if (urlParams.description) {
+        document.getElementById("text").value = urlParams.description;
+    }
+
+    if (urlParams.readingTime) {
+        document.getElementById("time-reading").value = urlParams.readingTime;
+    }
+
+    if (urlParams.image) {
+        document.getElementById("image").value = urlParams.image;
+    }
+
+    if (urlParams.tags) {
+        const tags = urlParams.tags.split(",");
+        const tagElements = document.getElementById("tags").options;
+        for (let i = 0; i < tagElements.length; i++) {
+            if (tags.includes(tagElements[i].value)) {
+                tagElements[i].selected = true;
+            }
+        }
+    }
+
     // адрес
-    await loadAddress()
+    await loadAddress(null)
 
     const createButton = document.getElementById("confirm-button")
 
@@ -182,11 +143,18 @@ export async function initializeCreatePostPage(communityId) {
         const image = document.getElementById("image").value === "" ? null : document.getElementById("image").value;
         const tags = Array.from(document.getElementById("tags").selectedOptions).map(option => option.value);
 
+        updateURLParams("group",group)
+        updateURLParams("title", title);
+        updateURLParams("description", description);
+        updateURLParams("readingTime", readingTime);
+        updateURLParams("image", image);
+        updateURLParams("tags", tags);
+
         try {
-            if (group) {
-                await createPostToCommunity(group, title, description, readingTime, image, address, tags);
+            if (group !== "null") {
+                await createPostToCommunity(group, title, description, readingTime, image, addressId, tags);
             } else {
-                await createPost(title, description, readingTime, image, address, tags)
+                await createPost(title, description, readingTime, image, addressId, tags)
             }
         } catch (error) {
             alert("Ошибка создания поста: " + error.message);

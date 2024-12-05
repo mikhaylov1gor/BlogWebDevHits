@@ -6,6 +6,28 @@ document.addEventListener("DOMContentLoaded", () =>{
     rendering();
 });
 
+export function getURLParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const params = {};
+
+    for (const [key, value] of urlParams.entries()) {
+        params[key] = value;
+    }
+
+    return params;
+}
+
+export function updateURLParams(paramName, paramValue) {
+    const url = new URL(window.location.href);
+    if (paramValue) {
+        url.searchParams.set(paramName, paramValue);
+    } else {
+        url.searchParams.delete(paramName);
+    }
+    window.history.replaceState(null, "", url.toString());
+}
+
+
 export async function loadTags(){
     const tagsSelect = document.getElementById("tags");
     tagsSelect.innerHTML = "";

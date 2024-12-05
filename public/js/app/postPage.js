@@ -1,10 +1,10 @@
 import {getPost} from "../api/post.js";
 import {loadPost} from "./home.js";
 import {getAddressChain} from "../api/adress.js";
-import {addComment, deleteComment, editComment} from "../api/comment.js";
+import {addComment, deleteComment, editComment, getNestedComments} from "../api/comment.js";
 import {getProfileApi} from "../api/users.js";
 
-async function loadComment(postData, comment,myId) {
+async function loadComment(postData, comment,myId, value) {
     const response = await fetch("/templates/comment.html");
     if (!response.ok) {
         console.error(`Ошибка загрузки шаблона: ${response.statusText}`);
@@ -47,6 +47,7 @@ async function loadComment(postData, comment,myId) {
 
     const deleteButton = commentElement.querySelector("#delete-button");
     const editButton = commentElement.querySelector("#edit-button");
+
     if (comment.authorId === myId && !comment.deleteDate){
         deleteButton.style.display = "block";
         editButton.style.display = "block";
@@ -86,10 +87,15 @@ async function loadComment(postData, comment,myId) {
             await editComment(comment.id, commentElement.querySelector("#modify-text").value);
             location.reload();
         } catch (error) {
-            alert("ошибка при изменении комментария" + error.message)
+            alert("ошибка при изменении комментария: " + error.message)
         }
     });
 
+
+    console.log(value);
+    if(value){
+        commentElement.querySelector("#show-replies").style.display = "none";
+    }
 
     let replyFlag = false;
     commentElement.querySelector("#reply").addEventListener("click",(event) => {
@@ -108,12 +114,51 @@ async function loadComment(postData, comment,myId) {
     commentElement.querySelector("#reply-button-submit").addEventListener("click", async(event) =>{
         event.preventDefault();
         try {
-            await addComment(postData.id, commentElement.querySelector("#reply-text").value, comment.id)
+            if(value){
+                await addComment(postData.id, comment.author + ", " + commentElement.querySelector("#reply-text").value, comment.id)
+            }
+            else {
+                await addComment(postData.id, commentElement.querySelector("#reply-text").value, comment.id)
+            }
             location.reload();
         } catch (error) {
-            alert("ошибка при изменении комментария" + error.message)
+            alert("ошибка при ответе на комментарий: " + error.message)
         }
     });
+
+    console.log(comment);
+    let flag = false;
+    commentElement.querySelector("#show-replies").addEventListener("click", async(event) =>{
+        event.preventDefault();
+
+        const commentsContainer = commentElement.querySelector("#comments-bodies")
+        commentsContainer.innerHTML = "";
+
+
+        if (!flag) {
+            const nestedComments = await getNestedComments(comment.id);
+            commentElement.querySelector("#show-replies").textContent = "Скрыть ответы";
+            try {
+                for (const comment of nestedComments) {
+                    const commentElement = await loadComment(postData, comment, myId, true);
+                    commentsContainer.appendChild(commentElement);
+                }
+            } catch (error) {
+                alert("Ошибка при загрузке вложенных комментариев: " + error.message);
+            }
+            flag = true;
+        }
+        else {
+            commentElement.querySelector("#show-replies").textContent = "Раскрыть ответы";
+            flag = false;
+
+            commentElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+    })
 
     return commentElement;
 }
@@ -155,7 +200,6 @@ export async function initializePostPage(postId, value) {
         alert("Ошибка при загрузке комментариев: " + error.message);
     }
 
-    console.log(value);
     if (value){
         const scrollToContainer = document.querySelector("#comments-container")
         scrollToContainer.scrollIntoView({

@@ -1,7 +1,11 @@
 const API_URL = "https://blog.kreosoft.space/api"
 
 export async function registerApi(fullName,password,email,birthDate,gender,phoneNumber){
-    console.log(JSON.stringify({fullName,password,email,birthDate,gender,phoneNumber}));
+
+    if (password.length < 6){
+        throw Error("Password length must be greater than 5")
+    }
+
     try {
         const response = await fetch (`${API_URL}/account/register`,{
 

@@ -1,9 +1,10 @@
 import {getPosts, likePost, unLikePost} from "../api/post.js";
 import {navigateTo} from "./router.js";
-import {loadTags} from "./app.js";
+import {getURLParams, loadTags, updateURLParams} from "./app.js";
+import {initializePagination} from "./pagination.js";
 
 export async function loadPost(post){
-    const response = await fetch("/templates/post.html");
+    let response = await fetch("/templates/post.html");
     if (!response.ok) {
         throw new Error("Не удалось загрузить шаблон поста");
     }
@@ -122,6 +123,13 @@ export async function initializeHomePage(authorName) {
         return;
     }
 
+    const response = await fetch("/templates/pagination.html");
+    if (!response.ok) {
+        throw new Error("Не удалось загрузить шаблон пагинации");
+    }
+    const paginationElement = document.querySelector('#pagination');
+    paginationElement.innerHTML = await response.text()
+
     const postsContainer = document.getElementById('posts');
     postsContainer.style.display = "none";
     postsContainer.innerHTML = '';
@@ -142,12 +150,44 @@ export async function initializeHomePage(authorName) {
     // загрузка тегов
     await loadTags();
 
+    // загрузка параметров
+    let urlParams = getURLParams();
+    if (urlParams.tags) {
+        const tags = urlParams.tags.split(",");
+        const tagElements = document.getElementById("tags").options;
+        for (let i = 0; i < tagElements.length; i++) {
+            if (tags.includes(tagElements[i].value)) {
+                tagElements[i].selected = true;
+            }
+        }
+    }
+
+    if (urlParams.author) {
+        document.getElementById("author").value = urlParams.author;
+    }
+
+    if (urlParams.min) {
+        document.getElementById("min_reading").value = urlParams.min;
+    }
+
+    if (urlParams.max) {
+        document.getElementById("max_reading").value = urlParams.max;
+    }
+
+    if (urlParams.sorting) {
+        document.getElementById("sorting").value = urlParams.sorting;
+    }
+
+    if (urlParams.onlyMyCommunities) {
+        document.getElementById("only_mine").checked = urlParams.onlyMyCommunities;
+    }
+
     const createPostButton = document.getElementById("create-post-button");
     createPostButton.addEventListener("click", () => {
         navigateTo("/post/create");
     });
 
-    document.addEventListener("submit", (event) => {
+    document.addEventListener("submit", async (event) => {
         event.preventDefault();
         postsContainer.innerHTML = '';
 
@@ -157,25 +197,40 @@ export async function initializeHomePage(authorName) {
         const max = document.getElementById("max_reading").value;
         const sorting = document.getElementById("sorting").value;
         const onlyMyCommunities = document.getElementById("only_mine").checked;
-        const page = 1;
-        const size = document.getElementById("pageSize").value;
-        document.getElementById("pagination").style.display = "flex";
+
+        urlParams = getURLParams();
+        const page = urlParams.page ? urlParams.page : 1;
+        const size = urlParams.size ? urlParams.size : 5;
+
+        updateURLParams("tags", tags);
+        updateURLParams("author", author);
+        updateURLParams("min", min);
+        updateURLParams("max", max);
+        updateURLParams("sorting", sorting);
+        updateURLParams("onlyMyCommunities", onlyMyCommunities);
+        updateURLParams("size", size);
+        updateURLParams("page", page);
+
 
         const loading = document.getElementById("loading");
         loading.style.display = "block";
-        getPosts(tags, author, min, max, sorting, onlyMyCommunities, page, size)
-            .then(async data => {
-                for (const post of data.posts) {
-                    const postElement = await loadPost(post);
-                    postsContainer.appendChild(postElement);
-                }
-            })
-            .catch(error => {
-                alert("Ошибка при загрузке постов: " + error.message);
-            })
-            .finally(()=>{
-                postsContainer.style.display = "block";
-                loading.style.display = "none";
-            })
+
+        try {
+            const data = await getPosts(tags, author, min, max, sorting, onlyMyCommunities, page, size)
+            await initializePagination(data.pagination.size, data.pagination.count, data.pagination.current);
+
+            for (const post of data.posts) {
+                const postElement = await loadPost(post);
+                postsContainer.appendChild(postElement);
+            }
+        } catch (error){
+            alert("Ошибка при загрузке постов: " + error.message);
+        } finally {
+            postsContainer.style.display = "block";
+            loading.style.display = "none";
+            paginationElement.style.display = "flex";
+        }
     });
+
+    document.dispatchEvent(new Event('submit'));
 }

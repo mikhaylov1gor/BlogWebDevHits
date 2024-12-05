@@ -66,11 +66,14 @@ export async function createPost(title,description,readingTime,image,addressId,t
 }
 
 export async function getPost(postId){
+    const token = localStorage.getItem("authToken");
+
     try{
         const response = await fetch(`${API_URL}/post/${postId}`, {
             method: "GET",
             headers: {
                 "Content-Type": `application/json`,
+                "Authorization": `Bearer ${token}`
             }
         });
 
