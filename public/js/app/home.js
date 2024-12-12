@@ -199,8 +199,9 @@ export async function initializeHomePage(authorName) {
         const onlyMyCommunities = document.getElementById("only_mine").checked;
 
         urlParams = getURLParams();
-        const page = urlParams.page ? urlParams.page : 1;
-        const size = urlParams.size ? urlParams.size : 5;
+        let page = 1;
+        const size = 5;
+
 
         updateURLParams("tags", tags);
         updateURLParams("author", author);
@@ -211,12 +212,12 @@ export async function initializeHomePage(authorName) {
         updateURLParams("size", size);
         updateURLParams("page", page);
 
-
         const loading = document.getElementById("loading");
         loading.style.display = "block";
 
         try {
             const data = await getPosts(tags, author, min, max, sorting, onlyMyCommunities, page, size)
+
             await initializePagination(data.pagination.size, data.pagination.count, data.pagination.current);
 
             for (const post of data.posts) {
