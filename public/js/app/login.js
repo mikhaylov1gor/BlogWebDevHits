@@ -26,7 +26,7 @@ export function initializeLoginPage() {
                 window.location.href = "/";
             }
         } catch (error) {
-            alert("Ошибка авторизации: " + error.message);
+            alert("Неверный логин или пароль");
         }
     });
 }

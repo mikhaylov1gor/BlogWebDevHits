@@ -36,6 +36,9 @@ export async function initializeCommunityPage(communityId) {
         return;
     }
 
+    document.querySelector("#group").style.display = "none";
+    document.querySelector("#loading").style.display = "block";
+
     const response = await fetch("/templates/pagination.html");
     if (!response.ok) {
         throw new Error("Не удалось загрузить шаблон пагинации");
@@ -156,7 +159,8 @@ export async function initializeCommunityPage(communityId) {
                 postsContainer.appendChild(postElement);
             }
         } catch (error){
-            alert("Ошибка при загрузке страницы сообщества: " + error.message);
+            updateURLParams("page", 1);
+            location.reload();
         } finally {
             postsContainer.style.display = "block";
             loading.style.display = "none";
@@ -167,4 +171,7 @@ export async function initializeCommunityPage(communityId) {
     if (canWatch) {
         document.dispatchEvent(new Event('submit'));
     }
+
+    document.querySelector("#group").style.display = "block";
+    document.querySelector("#loading").style.display = "none";
 }

@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/loading.css">
     <script src="../js/app/communityPage.js" type="module" defer></script>
 </head>
 <body>
 <main>
+
+    <div id="loading" style="display: none;">
+        <div id="load">
+            <div>G</div>
+            <div>N</div>
+            <div>I</div>
+            <div>D</div>
+            <div>A</div>
+            <div>O</div>
+            <div>L</div>
+        </div>
+    </div>
+
     <section id="group">
         <form id="group-form">
             <header>
                 <div class="filter-row">
-                    <h1 id="group-name">Группа "Название"</h1>
+                    <h1 id="group-name"></h1>
                     <div class="actions">
                         <button id="create-post-button" style="display: none;">Написать пост</button>
                         <button id="subscribe-action-button" class="unsubscribe" style="display: none"></button>
@@ -20,10 +34,10 @@
                 </div>
             </header>
             <div class="filter-row">
-                <h2 id="subs-count">27 подписчиков</h2>
+                <h2 id="subs-count"></h2>
             </div>
             <div class="filter-row">
-                <h3 id="community-type">Тип сообщества: закрытое</h3>
+                <h3 id="community-type"></h3>
             </div>
             <header>
                 <h1>Администраторы</h1>
@@ -82,11 +96,6 @@
     <div id="pagination" style="display: none;">
 
     </div>
-
 </main>
-
-<footer>
-    <p>&copy;2024 - Блог №415</p>
-</footer>
 </body>
 </html>

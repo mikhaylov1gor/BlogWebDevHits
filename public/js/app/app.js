@@ -78,7 +78,21 @@ export function validation(value,type){
     switch (type){
         case "phone":
             return validatePhone(value);
+        case "password":
+            return validatePassword(value);
+        case "date":
+            return validateDate(value);
     }
+}
+
+function validateDate(value){
+    const today = new Date();
+    return value <= today;
+}
+
+function validatePassword(value){
+    const regex = /^(?=.*\d).{6,}$/;
+    return value.match(regex);
 }
 
 function validatePhone(value){

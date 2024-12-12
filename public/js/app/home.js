@@ -199,8 +199,8 @@ export async function initializeHomePage(authorName) {
         const onlyMyCommunities = document.getElementById("only_mine").checked;
 
         urlParams = getURLParams();
-        let page = 1;
-        const size = 5;
+        let page = urlParams.page ? urlParams.page : 1;
+        const size = urlParams.size ? urlParams.size : 5;
 
 
         updateURLParams("tags", tags);
@@ -225,7 +225,8 @@ export async function initializeHomePage(authorName) {
                 postsContainer.appendChild(postElement);
             }
         } catch (error){
-            alert("Ошибка при загрузке постов: " + error.message);
+            updateURLParams("page", 1);
+            location.reload();
         } finally {
             postsContainer.style.display = "block";
             loading.style.display = "none";

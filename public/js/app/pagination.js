@@ -55,6 +55,30 @@ function renderButtons(count,current){
         }
     }
     buttonsContainer.appendChild(nextButton);
+
+    prevButton.addEventListener("click", (event) =>{
+        event.preventDefault();
+
+        if(current === 1){
+            return;
+        }
+
+        updateURLParams("page", current - 1);
+        history.pushState({ page: current - 1 }, '', window.location.href);
+        window.location.reload();
+    })
+
+    nextButton.addEventListener("click", (event) =>{
+        event.preventDefault();
+
+        if(current === count){
+            return;
+        }
+
+        updateURLParams("page", current + 1);
+        history.pushState({ page: current + 1 }, '', window.location.href);
+        window.location.reload();
+    })
 }
 export async function initializePagination(size,count,current){
     console.log(size,count,current);
