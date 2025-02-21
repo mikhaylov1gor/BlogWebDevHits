@@ -30,6 +30,6 @@ Running Locally
 
 		live-server public --port=3000 --entry-file=index.html
 
-or
+	or
 
 		npm start
