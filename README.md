@@ -1,4 +1,4 @@
-This is a simple web-based blogging application built with vanilla JavaScript, CSS (Less for styling), and HTML. The application allows users to create, edit, and delete blog posts without using any frontend frameworks.
+This is a simple web-based blogging single page application built with vanilla JavaScript, CSS (Less for styling), and HTML. The application allows users to create, edit, and delete blog posts without using any frontend frameworks.
 
 Technologies Used
 	
